@@ -33,7 +33,8 @@ img {
 .contenido a {
     /* Forma 1 Centrar */
     display: flex;
-    margin-trim: all;
+    margin-left: 33%;
+    margin-right: 33%;
 
     justify-content: center;
     text-align: center;
