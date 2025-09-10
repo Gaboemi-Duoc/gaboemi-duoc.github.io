@@ -1,0 +1,57 @@
+
+#carouselExample img {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#carouselExample {
+    width: 100%; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    height: 500px; 
+    overflow: hidden; 
+}
+
+container text-center{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 500px
+}
+
+/* Centrar el contenedor */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px; /* Separación desde arriba */
+}
+
+/* Ajuste de las tarjetas */
+.card {
+    width: 100%;
+    max-width: 20rem;
+    margin: 0 auto; /* Para asegurar centrado */
+    border-radius: 12px; /* Bordes más suaves */
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.15); /* Sombra ligera */
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05); /* Efecto al pasar el mouse */
+}
+
+/* Ajustar imágenes dentro de las tarjetas */
+.card img {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+/* Texto de precio */
+.card p:nth-of-type(2) {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
