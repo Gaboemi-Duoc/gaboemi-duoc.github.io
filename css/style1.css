@@ -11,13 +11,15 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-/* Imagen grande del juego */
+/* Imagen grande del juego (detalle) */
 .producto-detalle-img {
     flex: 1 1 400px;
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     max-width: 100%;
-    object-fit: cover;
+    width: 400px;   /* Tamaño fijo para uniformidad */
+    height: 400px;  /* Altura fija */
+    object-fit: cover; /* Ajusta sin deformar */
 }
 
 /* Sección de información */
@@ -52,7 +54,7 @@
     color: #333;
 }
 
-/* Detalles adicionales (género, tamaño, jugadores, etc.) */
+/* Detalles adicionales */
 .producto-detalle-info .detalles {
     display: flex;
     flex-wrap: wrap;
@@ -110,6 +112,7 @@
     }
 }
 
+/* Botón primario estilo Nintendo */
 .btn-primary {
     background-color: #e60012; /* rojo Nintendo */
     color: #fff;
@@ -126,3 +129,10 @@
     transform: scale(1.05);
 }
 
+/* --- Ajustes para las tarjetas de catálogo --- */
+.card img {
+    width: 100%;
+    height: 250px;        /* Tamaño fijo para todas las portadas */
+    object-fit: cover;    /* Se recorta sin deformar */
+    border-radius: 8px;
+}
