@@ -1,4 +1,4 @@
-// Lista de productos (sin cambios)
+// Lista de productos (con 4 juegos nuevos)
 const productos = [
   { 
     id: 1,
@@ -6,7 +6,7 @@ const productos = [
     descripcion: "Mario y compañia tienen una nueva aventura en Nintendo Switch",
     precio: "59.990",
     img: "images/images.jpg",
-    link:"PROYECTO KIBAproductos/wonderpack/wonder.html" 
+    link:"wonder.html" 
   },
   { 
     id: 2,
@@ -14,37 +14,58 @@ const productos = [
     descripcion: "Hallownest te espera para una aventura nunca antes vista",
     precio: "19.990",
     img: "images/hollow k.jpg",
-    link:"productos/hollowpack/hollow.html"
+    link:"hollow.html"
   },
   { 
     id: 3,
     nombre: "Devil May Cry 5",
     descripcion: "El regreso de uno de los juegos más queridos de Capcom",
     precio: "59.990",
-    img: "images/devil-may-cry-5-4318.jpg" 
+    img: "images/devil-may-cry-5-4318.jpg",
+    link: "devil5.html"
   },
   { 
     id: 4,
     nombre: "Minecraft",
     descripcion: "Un juego de minecraft",
     precio: "12.990",
-    img: "images/FWrTzT7XoAAqMAj.png" 
+    img: "images/FWrTzT7XoAAqMAj.png",
+    link: "minecraft.html" 
   },
   { 
     id: 5,
-    nombre: "street fighter 6",
-    descripcion: "juego de pelea",
+    nombre: "Street Fighter 6",
+    descripcion: "El último juego de la saga de peleas más famosa",
     precio: "69.990",
-    img: "images/Str6.jpg" 
+    img: "images/Str6.jpg",
+    link: "street.html" 
   },
   { 
     id: 6,
     nombre: "Battlefield 6",
-    descripcion: "un juego que esta reviviendo",
+    descripcion: "La saga Battlefield vuelve con batallas épicas",
     precio: "59.990",
-    img:"images/disparo6.jpg" 
+    img:"images/disparo6.jpg",
+    link: "battlefield.html" 
+  },
+  { 
+    id: 7,
+    nombre: "Metroid Prime 4",
+    descripcion: "Samus Aran regresa en una nueva misión intergaláctica",
+    precio: "69.990",
+    img:"images/djg4d1m-9ac6075f-3922-4301-8ec4-7c83e270d964.png",
+    link:"metroid.html",
+  },
+  { 
+    id: 8,
+    nombre: "The Legend of Zelda: Tears of the Kingdom",
+    descripcion: "La secuela de Breath of the Wild llega con un mundo aún más grande",
+    precio: "69.990",
+    img:"images/0WxlWsN.jpeg",
+    link:"zelda.html"
   }
 ];
+
 
 // Carrito de compras
 let carrito = [];
