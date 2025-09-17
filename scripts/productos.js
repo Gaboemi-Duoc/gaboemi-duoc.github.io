@@ -12,7 +12,7 @@ const productos = [
     nombre: "Hollow Knight",
     descripcion: "Hallownest te espera para una aventura nunca antes vista",
     precio: "19.990",
-    img: "images/hollow k.jpg",
+    img: "images/wekofoto.jpg",
     link:"hollow.html"
   },
   { 
