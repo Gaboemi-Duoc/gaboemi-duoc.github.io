@@ -13,14 +13,7 @@ function renderCarrote() {
 
     carrito.forEach((prod, index) => {
         contenedor.innerHTML += `
-      <div class="carrito-item">
-        <img src="${prod.img}" alt="${prod.nombre}" class="carrito-img">
-        <div>
-          <p>${prod.nombre}</p>
-          <p>$${prod.precio}</p>
-        </div>
-        <button onclick="eliminarDelCarrito(${index})" class="btn btn-sm btn-danger">X</button>
-      </div>
+      
     `;
     });
 
