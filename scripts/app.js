@@ -85,4 +85,5 @@ window.eliminarDelCarrito = eliminarDelCarrito;
 renderProductos(productos);
 // Carga carrito desde sessionStorage al iniciar
 carrito = JSON.parse(sessionStorage.getItem("carrito"))
+if (!carrito) carrito = [];
 renderCarrito()
