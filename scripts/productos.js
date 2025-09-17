@@ -1,3 +1,5 @@
+// TODO: Agregar genre, size, players, release-date, dev, discount
+
 const productos = [
   { 
     id: 1,
