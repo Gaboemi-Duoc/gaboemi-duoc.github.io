@@ -1,26 +1,33 @@
-/* Contenedor principal */
 .producto-detalle-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    background-color: #f8f8f8;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: flex;            /* ya lo tienes con d-flex */
+  flex-wrap: wrap;          /* ya lo tienes */
+  justify-content: center;  /* centra los items horizontalmente */
+  align-items: flex-start;  /* alinea al inicio verticalmente */
+  gap: 1rem;                /* separación entre items */
+  padding: 1rem;            /* ajuste de padding */
 }
 
-/* Imagen grande del juego (detalle) */
-.producto-detalle-img {
-    flex: 1 1 400px;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    max-width: 100%;
-    width: 400px;   /* Tamaño fijo para uniformidad */
-    height: 400px;  /* Altura fija */
-    object-fit: cover; /* Ajusta sin deformar */
+.producto-item {
+  flex: 1 1 250px; /* flex-grow:1, flex-shrink:1, flex-basis:250px */
+  max-width: 300px; /* opcional, para que no crezca demasiado */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f8f8f8;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
+
+.producto-item img{
+    width: 100%;
+    height: auto;      /* mantiene proporción */
+    max-width: 250px;      /* ancho máximo permitido */
+    max-height: 250px; 
+    object-fit: contain; /* evita deformar la imagen */
+    border-radius: 5px;
+}
+
 
 /* Sección de información */
 .producto-detalle-info {
@@ -136,3 +143,5 @@
     object-fit: cover;    /* Se recorta sin deformar */
     border-radius: 8px;
 }
+
+

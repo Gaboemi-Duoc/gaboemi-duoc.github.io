@@ -36,7 +36,7 @@ const productos = [
     nombre: "Street Fighter 6",
     descripcion: "El último juego de la saga de peleas más famosa",
     precio: "69.990",
-    img: "images/Str6.jpg",
+    img: "images/streetwallpaper.jpg",
     link: "street.html" 
   },
   { 
