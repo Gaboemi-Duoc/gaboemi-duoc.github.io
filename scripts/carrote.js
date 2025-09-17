@@ -40,7 +40,7 @@ function renderCarrote() {
     // Total
     const contenedor2 = document.getElementById("carrito-total")
     const total = carrito.reduce((acc, p) => acc + parseFloat(p.precio.replace(/\./g, '')), 0);
-    contenedor.innerHTML += `<p class="total-carrito"><strong>Total:</strong> $${total.toLocaleString()}</p>`;
+    contenedor2.innerHTML += `<p class="total-carrito"><strong>Total:</strong> $${total.toLocaleString()} CLP</p>`;
 }
 
 renderCarrote()
