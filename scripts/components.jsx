@@ -1,5 +1,5 @@
 
-function Nav(activePage) { // TODO: parametrizar la pag activa
+export default function Nav(activePage) { // TODO: parametrizar la pag activa
 	return (
 		<nav class="navbar navbar-expand-sm fixed-top bg-warning">
 			<div class="container-fluid">
