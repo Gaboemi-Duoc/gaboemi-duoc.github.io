@@ -55,7 +55,7 @@ const productos = [
     descripcion: "Samus Aran regresa en una nueva misión intergaláctica",
     precio: "69.990",
     img:"images/djg4d1m-9ac6075f-3922-4301-8ec4-7c83e270d964.png",
-    link:"metroid.html"
+    link:"metroid.html",
   },
   { 
     id: 8,
