@@ -1,4 +1,4 @@
-// Datos de productos
+// scripts/app.jsx
 const productos = [
   { id: 1, nombre: "Super Mario Wonder", descripcion: "Mario y compañia tienen una nueva aventura en Nintendo Switch", precio: "59.990", img: "images/images.jpg", genero:"Aventura", tamano:"Próximamente", jugadores:1, lanzamiento:"Por confirmar", desarrollador:"Nintendo" },
   { id: 2, nombre: "Hollow Knight", descripcion: "Hallownest te espera para una aventura nunca antes vista", precio: "19.990", img: "images/hollow k.jpg", genero:"Aventura / Metroidvania", tamano:"Próximamente", jugadores:1, lanzamiento:"Por confirmar", desarrollador:"Team Cherry" },
@@ -11,7 +11,7 @@ const productos = [
   {id: 9,nombre: "Hollow Knight: Silksong",descripcion: "La esperada secuela de Hollow Knight, acompañando a Hornet en una nueva aventura por Hallownest.",precio: "29.990",img: "images/hollowsilksong.jpg",genero: "Aventura / Metroidvania",tamano: "Próximamente",jugadores: 1,lanzamiento: "Por confirmar",desarrollador: "Team Cherry"}
 ];
 
-// Componente para cada producto en la lista
+// Componente Producto
 function Producto({ prod, onAdd }) {
   return (
     <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
@@ -86,34 +86,6 @@ function Carrito({ carrito, onRemove }) {
   );
 }
 
-// Detalle de producto
-function ProductoDetalle({ producto }) {
-  if (!producto) return <h2 className="text-center mt-5">Producto no encontrado 😢</h2>;
-  return (
-    <main style={{ paddingTop: "4.5rem" }}>
-      <div className="producto-detalle-container mt-5 p-4 d-flex flex-wrap justify-content-center align-items-start gap-4">
-        <div className="producto-imagen text-center">
-          <img src={producto.img} alt={producto.nombre} className="producto-detalle-img img-fluid rounded shadow" />
-        </div>
-        <div className="producto-detalle-info" style={{ maxWidth: "500px" }}>
-          <h1>{producto.nombre}</h1>
-          <p className="precio fs-4 text-success fw-bold">${producto.precio}</p>
-          <p>{producto.descripcion}</p>
-          <ul className="list-group list-group-flush mb-3">
-            <li className="list-group-item"><strong>Género:</strong> {producto.genero}</li>
-            <li className="list-group-item"><strong>Tamaño:</strong> {producto.tamano}</li>
-            <li className="list-group-item"><strong>Jugadores:</strong> {producto.jugadores}</li>
-            <li className="list-group-item"><strong>Lanzamiento:</strong> {producto.lanzamiento}</li>
-            <li className="list-group-item"><strong>Desarrollador:</strong> {producto.desarrollador}</li>
-          </ul>
-          <button className="btn btn-success w-100 mb-2">Comprar Ahora</button>
-          <button className="btn btn-secondary w-100" onClick={() => window.history.back()}>Volver</button>
-        </div>
-      </div>
-    </main>
-  );
-}
-
 // Componente principal
 function App() {
   const [carrito, setCarrito] = React.useState([]);
@@ -130,6 +102,7 @@ function App() {
     <div className="container mt-4">
       <Carrusel />
       {producto ? (
+        // Usamos ProductoDetalle definido en ProductoDetalle.jsx
         <ProductoDetalle producto={producto} />
       ) : (
         <div className="row justify-content-center mt-4">
