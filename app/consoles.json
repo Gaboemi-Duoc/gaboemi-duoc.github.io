@@ -1,0 +1,9 @@
+[
+	{ "id": 1, "nombre": "Xbox Series S", "descripcion": "Mario y compañia tienen una nueva aventura en Nintendo Switch", "precio": "59.990", "img": "/images/images.jpg", "lanzamiento":"Por confirmar", "desarrollador":"Nintendo" },
+	{ "id": 2, "nombre": "Xbox Series X", "descripcion": "Hallownest te espera para una aventura nunca antes vista", "precio": "19.990", "img": "/images/hollow k.jpg", "lanzamiento":"Por confirmar", "desarrollador":"Team Cherry" },
+	{ "id": 3, "nombre": "PS5", "descripcion": "El regreso de uno de los juegos más queridos de Capcom", "precio": "59.990", "img": "/images/devil-may-cry-5-4318.jpg", "lanzamiento":"2019", "desarrollador":"Capcom" },
+	{ "id": 4, "nombre": "Nintendo Switch", "descripcion": "Un juego de minecraft", "precio": "12.990", "img": "/images/FWrTzT7XoAAqMAj.png", "genero":"Sandbox / Aventura", "lanzamiento":"2011", "desarrollador":"Mojang" },
+	{ "id": 5, "nombre": "Nintendo Switch 2", "descripcion": "El último juego de la saga de peleas más famosa", "precio": "69.990", "img": "/images/Str6.jpg", "lanzamiento":"2023", "desarrollador":"Capcom" },
+	{ "id": 6, "nombre": "Steam Deck", "descripcion": "La saga Battlefield vuelve con batallas épicas", "precio": "59.990", "img":"/images/disparo6.jpg", "lanzamiento":"2023", "desarrollador":"EA DICE" }
+]
+

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Head from "next/head";
 import productsList from "./products.json";
+import "./productos/[id]/style.css";
 
 // Types
 interface Producto {
@@ -37,7 +38,7 @@ function Producto({ prod, onAdd }: ProductoProps) {
   return (
     <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
       <div className="producto-card">
-        <a href={`/?id=${prod.id}`} className="producto-link">
+        <a href={`/productos/${prod.id}`} className="producto-link">
           <div className="producto-img">
             <img src={prod.img} alt={prod.nombre} className="img-fluid" />
           </div>
