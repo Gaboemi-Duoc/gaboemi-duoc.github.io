@@ -8,3 +8,7 @@ Documentacion:
 - https://codesandbox.io/p/github/Gaboemi-Duoc/gaboemi-duoc.github.io/
 - https://github.com/react-bootstrap/code-sandbox-examples/blob/master/README.md
 - https://nextjs-org.translate.goog/learn/react-foundations/getting-started-with-react?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc&_x_tr_hist=true
+
+https://gaboemi-duoc-github-io.vercel.app/
+# DASHBOARD
+- https://vercel.com/gaboemi-duocs-projects/gaboemi-duoc-github-io
