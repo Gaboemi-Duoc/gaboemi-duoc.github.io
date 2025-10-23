@@ -47,7 +47,10 @@ export default function RootLayout({
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-white text-decoration-none">
+                  <Link
+                    href="/consolas"
+                    className="text-white text-decoration-none"
+                  >
                     Consolas
                   </Link>
                 </li>
@@ -71,7 +74,7 @@ export default function RootLayout({
 
         <main className="container mt-4">{children}</main>
 
-        <footer className="bg-dark text-white mt-5 py-4">
+        <footer className="bg-dark mat-auto text-white mt-5 py-4">
           <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center">
             <p className="mb-2 mb-md-0">
               © 2025 Goldencat - Todos los derechos reservados
