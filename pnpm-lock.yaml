@@ -29,6 +29,9 @@ devDependencies:
   '@eslint/eslintrc':
     specifier: ^3
     version: 3.3.1
+  '@next/eslint-plugin-next':
+    specifier: ^16.0.0
+    version: 16.0.0
   '@types/node':
     specifier: ^20
     version: 20.17.48
@@ -442,6 +445,12 @@ packages:
 
   /@next/eslint-plugin-next@15.2.0:
     resolution: {integrity: sha512-jHFUG2OwmAuOASqq253RAEG/5BYcPHn27p1NoWZDCf4OdvdK0yRYWX92YKkL+Mk2s+GyJrmd/GATlL5b2IySpw==}
+    dependencies:
+      fast-glob: 3.3.1
+    dev: true
+
+  /@next/eslint-plugin-next@16.0.0:
+    resolution: {integrity: sha512-IB7RzmmtrPOrpAgEBR1PIQPD0yea5lggh5cq54m51jHjjljU80Ia+czfxJYMlSDl1DPvpzb8S9TalCc0VMo9Hw==}
     dependencies:
       fast-glob: 3.3.1
     dev: true

@@ -10,6 +10,7 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = {
+  extends: ["plugin:@next/next/recommended"],
   rules: {
     "no-unused-vars": "off", // Disable the base ESLint rule
     "@typescript-eslint/no-unused-vars": "off", // Disable the TypeScript specific rule
