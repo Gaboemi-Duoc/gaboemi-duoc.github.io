@@ -21,13 +21,14 @@ export async function POST(req: Request) {
     : [];
 
   // Verificar si ya existe el correo
-  const existe = data.some((u: any) => u.correo === correo);
-  if (existe) {
-    return NextResponse.json(
-      { message: "El correo ya está registrado" },
-      { status: 400 }
-    );
-  }
+  // const existe = data.some((u: any) => u.correo === correo);
+  // if (existe) {
+  //   return NextResponse.json(
+  //     { message: "El correo ya está registrado" },
+  //     { status: 400 }
+  //   );
+  // }
+  // Error en ANY
 
   // Crear nuevo usuario
   const nuevoUsuario = { id: Date.now(), nombre, correo, password };
