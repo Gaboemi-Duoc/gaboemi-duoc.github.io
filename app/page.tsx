@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Head from "next/head";
 import productsList from "./products.json";
@@ -71,13 +71,12 @@ export function Carrusel() {
   const [direction, setDirection] = useState<"next" | "prev">("next");
 
   //elemento para que cambie cada 3 seg
-  /*useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % imagenes.length);
     }, 3000);
     return () => clearInterval(interval);
   }, [imagenes.length]);
-  */
 
   const prevSlide = () => {
     setIndex((prev) => (prev - 1 + imagenes.length) % imagenes.length);
