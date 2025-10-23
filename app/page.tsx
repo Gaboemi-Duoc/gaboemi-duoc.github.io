@@ -59,7 +59,7 @@ function Producto({ prod, onAdd }: ProductoProps) {
 }
 
 // Carrusel Component
-export function Carrusel() {
+function Carrusel() {
   const imagenes = [
     "/images/djg4d1m-9ac6075f-3922-4301-8ec4-7c83e270d964.png",
     "/images/hollow k.jpg",
