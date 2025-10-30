@@ -43,11 +43,9 @@ export async function POST(req: Request) {
     password,
   };
 
-  data.push(nuevoUsuario);
-
   const dir = path.dirname(filePath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-
+  data.push(nuevoUsuario);
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
   return NextResponse.json({ message: "Usuario registrado con éxito" });

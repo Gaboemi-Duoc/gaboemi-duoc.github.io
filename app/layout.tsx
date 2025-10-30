@@ -19,8 +19,6 @@ export const metadata: Metadata = {
   description: "Compra los mejores juegos al mejor precio",
 };
 
-// Poner Header y Footer aca jsjs
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,8 +30,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-light`}
       >
         <header className="bg-dark text-white">
-          <div className="container d-felx justiify-content-between align-items-center py-3">
+          <div className="container d-flex justify-content-between align-items-center py-3">
             <h1 className="h4 m-0">GoldenCat</h1>
+
             <nav>
               <ul className="d-flex list-unstyled m-0 gap-3">
                 <li>
@@ -42,7 +41,10 @@ export default function RootLayout({
                   </Link>
                 </li>
                 <li>
-                  <Link href="/" className="text-white text-decoration-none">
+                  <Link
+                    href="/productos"
+                    className="text-white text-decoration-none"
+                  >
                     Juegos
                   </Link>
                 </li>
@@ -55,37 +57,46 @@ export default function RootLayout({
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-white text-decoration-none">
-                    Ofertas
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="text-white text-decoration-none">
+                  <Link
+                    href="/contacto"
+                    className="text-white text-decoration-none"
+                  >
                     Contacto
                   </Link>
                 </li>
               </ul>
             </nav>
-            <div>
-              <button className="btn btn-outline-light btn-sm">Carrito</button>
+
+            <div className="d-flex align-items-center gap-2">
+              {/* 🔽 Botón Carrito apunta a /cart */}
+              <Link href="/carrito" className="btn btn-outline-light btn-sm">
+                Carrito
+              </Link>
+
+              {/* 🔽 Nuevo botón de inicio de sesión */}
+              <Link
+                href="/login"
+                className="btn btn-outline-warning btn-sm text-white"
+              >
+                Iniciar sesión
+              </Link>
             </div>
           </div>
         </header>
 
         <main className="container mt-4">{children}</main>
 
-        <footer className="bg-dark mat-auto text-white mt-5 py-4">
+        <footer className="bg-dark text-white mt-5 py-4">
           <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center">
             <p className="mb-2 mb-md-0">
               © 2025 Goldencat - Todos los derechos reservados
             </p>
             <div>
               <a href="#" className="text-white text-decoration-none me-3">
-                {" "}
-                politicas de la privacidad
+                Políticas de privacidad
               </a>
               <a href="#" className="text-white text-decoration-none">
-                termino y condiciones
+                Términos y condiciones
               </a>
             </div>
           </div>
