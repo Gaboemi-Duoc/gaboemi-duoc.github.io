@@ -2,40 +2,52 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 const filePath = path.join(process.cwd(), "app/data/users.json");
+
+interface Usuario {
+  id: number;
+  nombre: string;
+  correo: string;
+  password: string;
+}
 
 export async function POST(req: Request) {
   const { nombre, correo, password } = await req.json();
 
-  // Validar campos básicos
-  if (!nombre || !correo || !password) {
+  if (!nombre?.trim() || !correo?.trim() || !password?.trim()) {
     return NextResponse.json(
       { message: "Faltan campos obligatorios" },
       { status: 400 }
     );
   }
 
-  // Leer archivo JSON
-  const data = fs.existsSync(filePath)
+  const data: Usuario[] = fs.existsSync(filePath)
     ? JSON.parse(fs.readFileSync(filePath, "utf-8"))
     : [];
 
-  // Verificar si ya existe el correo
-  // const existe = data.some((u: any) => u.correo === correo);
-  // if (existe) {
-  //   return NextResponse.json(
-  //     { message: "El correo ya está registrado" },
-  //     { status: 400 }
-  //   );
-  // }
-  // Error en ANY
+  const existe = data.some((u) => u.correo === correo);
+  if (existe) {
+    return NextResponse.json(
+      { message: "El correo ya está registrado" },
+      { status: 400 }
+    );
+  }
 
-  // Crear nuevo usuario
-  const nuevoUsuario = { id: Date.now(), nombre, correo, password };
+  const nuevoUsuario: Usuario = {
+    id: Date.now(),
+    nombre,
+    correo,
+    password,
+  };
 
   data.push(nuevoUsuario);
 
-  // Guardar en el JSON
+  const dir = path.dirname(filePath);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
   return NextResponse.json({ message: "Usuario registrado con éxito" });

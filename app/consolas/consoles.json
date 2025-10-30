@@ -1,9 +1,0 @@
-[
-	{ "id": 1, "nombre": "Xbox Series S", "descripcion": "", "precio": "59.990", "img": "/images/images.jpg", "lanzamiento":"Por confirmar", "marca":"Nintendo"},
-	{ "id": 2, "nombre": "Xbox Series X", "descripcion": "", "precio": "19.990", "img": "/images/hollow k.jpg", "lanzamiento":"Por confirmar", "marca":"Team Cherry" },
-	{ "id": 3, "nombre": "PS5", "descripcion": "", "precio": "59.990", "img": "/images/devil-may-cry-5-4318.jpg", "lanzamiento":"2019", "marca":"Capcom" },
-	{ "id": 4, "nombre": "Nintendo Switch", "descripcion": "", "precio": "12.990", "img": "/images/FWrTzT7XoAAqMAj.png", "lanzamiento":"2011", "marca":"Mojang" },
-	{ "id": 5, "nombre": "Nintendo Switch 2", "descripcion": "", "precio": "69.990", "img": "/images/Str6.jpg", "lanzamiento":"2023", "marca":"Capcom" },
-	{ "id": 6, "nombre": "Steam Deck", "descripcion": "", "precio": "59.990", "img":"/images/disparo6.jpg", "lanzamiento":"2023", "marca":"EA DICE" }
-]
-

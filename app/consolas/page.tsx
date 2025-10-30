@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Head from "next/head";
-import ConsolesList from "./consoles.json";
+import ConsolesList from "../consoles.json";
 import { GenericCart } from "../carrito";
 
 interface Console {

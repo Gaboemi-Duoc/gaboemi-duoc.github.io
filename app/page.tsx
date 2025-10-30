@@ -61,9 +61,9 @@ function Producto({ prod, onAdd }: ProductoProps) {
 // Carrusel Component
 function Carrusel() {
   const imagenes = [
-    "/images/djg4d1m-9ac6075f-3922-4301-8ec4-7c83e270d964.png",
-    "/images/hollow k.jpg",
-    "/images/devil-may-cry-5-4318.jpg",
+    "/images/juegos/djg4d1m-9ac6075f-3922-4301-8ec4-7c83e270d964.png",
+    "/images/juegos/Dispatch.jpg",
+    "/images/juegos/devil-may-cry-5-4318.jpg",
   ];
 
   const [index, setIndex] = useState(0);
