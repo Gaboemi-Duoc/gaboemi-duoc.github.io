@@ -48,7 +48,11 @@ export async function POST(req: Request) {
     );
   }
 
+  // Return user data without password for localStorage
+  const { password: _, ...userWithoutPassword } = usuario;
+
   return NextResponse.json({
     message: `Bienvenido ${usuario.nombre}!`,
+    user: userWithoutPassword,
   });
 }

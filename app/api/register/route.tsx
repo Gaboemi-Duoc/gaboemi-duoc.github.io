@@ -48,5 +48,11 @@ export async function POST(req: Request) {
   data.push(nuevoUsuario);
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
-  return NextResponse.json({ message: "Usuario registrado con éxito" });
+  // Return user data without password for automatic login
+  const { password: _, ...userWithoutPassword } = nuevoUsuario;
+
+  return NextResponse.json({
+    message: "Usuario registrado con éxito",
+    user: userWithoutPassword,
+  });
 }

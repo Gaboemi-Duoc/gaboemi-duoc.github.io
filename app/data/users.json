@@ -1,8 +1,14 @@
 [
   {
     "id": 1761829861215,
-    "nombre": "sfaf",
-    "correo": "asfasf@gmail.com",
-    "password": "afasf"
+    "nombre": "admin",
+    "correo": "test@admin.com",
+    "password": "admin"
+  },
+  {
+    "id": 1762064315824,
+    "nombre": "Test",
+    "correo": "test@gmail.com",
+    "password": "test"
   }
 ]
