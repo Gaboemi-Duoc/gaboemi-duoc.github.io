@@ -7,10 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:login": "jest tests/login.test.js --verbose",
-    "test:register": "jest tests/register.test.js --verbose",
-    "test:all": "jest tests --verbose",
-    "test:watch": "jest tests --watch"
+    "test": "karma start karma.conf.js",
+    "test:once": "karma start karma.conf.js --single-run"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
@@ -20,6 +18,7 @@
     "tailwind": "^4.0.0"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^20.3.8",
     "@eslint/eslintrc": "^3",
     "@types/bootstrap": "^5.2.10",
     "@types/jest": "^30.0.0",
@@ -29,11 +28,20 @@
     "chromedriver": "^142.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.2.0",
+    "jasmine": "^4.6.0",
+    "jasmine-core": "^4.6.1",
     "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "karma": "^6.4.4",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-jasmine": "^5.1.0",
+    "karma-jasmine-html-reporter": "^2.1.0",
     "postcss": "^8",
     "selenium-webdriver": "^4.38.0",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5"
+    "typescript": "^5",
+    "webdriver-manager": "^12.1.9"
   },
   "pnpm": {
     "overrides": {
