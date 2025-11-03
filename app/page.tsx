@@ -206,8 +206,9 @@ function useCssLoaded() {
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
   const cssLoaded = useCssLoaded();
-  const productoId = usePathname
-    ? parseInt(usePathname().split("/").pop() || "")
+  const pathname = usePathname();
+  const productoId = pathname
+    ? parseInt(pathname.split("/").pop() || "")
     : null;
   const producto = productoId
     ? productos.find((p) => p.id === productoId)
