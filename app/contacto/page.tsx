@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 
 // CSS loading check hook
 function useCssLoaded() {
@@ -303,12 +304,12 @@ export default function AboutPage() {
             somos la elección preferida
           </p>
           <div className="d-flex gap-3 justify-content-center">
-            <a href="/productos" className="btn btn-warning btn-lg">
+            <Link href="/productos" className="btn btn-warning btn-lg">
               Ver Juegos
-            </a>
-            <a href="/consolas" className="btn btn-outline-light btn-lg">
+            </Link>
+            <Link href="/consolas" className="btn btn-outline-light btn-lg">
               Ver Consolas
-            </a>
+            </Link>
           </div>
         </div>
       </div>
