@@ -1,9 +1,9 @@
 "use client";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
-import productsList from "../products.json"; // JSON de videojuegos
-import { GenericCart } from "../carrito";
+import productsList from "../products.json";
+import { useCart, CartItem } from "../components/carritoContext";
+import { ProductoCard } from "../components/productCard";
 
 interface Producto {
   id: number;
@@ -18,67 +18,131 @@ interface Producto {
   desarrollador: string;
 }
 
-interface ProductoCardProps {
-  producto: Producto;
-  onAdd: (producto: Producto) => void;
+// CSS loading check hook
+function useCssLoaded() {
+  const [cssLoaded, setCssLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkCssLoaded = () => {
+      // Check if Bootstrap CSS is loaded by testing a Bootstrap-specific class
+      const testElement = document.createElement("div");
+      testElement.className = "container";
+      document.body.appendChild(testElement);
+
+      const computedStyle = window.getComputedStyle(testElement);
+      const isLoaded =
+        computedStyle.display !== "inline" && computedStyle.maxWidth !== "";
+
+      document.body.removeChild(testElement);
+      return isLoaded;
+    };
+
+    const waitForCss = () => {
+      if (checkCssLoaded()) {
+        setCssLoaded(true);
+      } else {
+        // If not loaded yet, check again after a short delay
+        const interval = setInterval(() => {
+          if (checkCssLoaded()) {
+            setCssLoaded(true);
+            clearInterval(interval);
+          }
+        }, 50);
+
+        // Fallback: if CSS doesn't load within 3 seconds, proceed anyway
+        const timeout = setTimeout(() => {
+          setCssLoaded(true);
+          clearInterval(interval);
+        }, 3000);
+
+        return () => {
+          clearInterval(interval);
+          clearTimeout(timeout);
+        };
+      }
+    };
+
+    // Wait for DOM to be ready
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", waitForCss);
+    } else {
+      waitForCss();
+    }
+
+    // Also listen for window load event as backup
+    window.addEventListener("load", waitForCss);
+
+    return () => {
+      window.removeEventListener("load", waitForCss);
+      document.removeEventListener("DOMContentLoaded", waitForCss);
+    };
+  }, []);
+
+  return cssLoaded;
 }
 
 export default function JuegosPage() {
-  const [carrito, setCarrito] = useState<Producto[]>([]);
+  const [mounted, setMounted] = useState(false);
+  const cssLoaded = useCssLoaded();
+  const { agregarAlCarrito } = useCart();
 
-  const agregar = (p: Producto) => setCarrito([...carrito, p]);
-  const eliminar = (index: number) =>
-    setCarrito(carrito.filter((_, i) => i !== index));
+  const createCartItem = (producto: Producto): CartItem => ({
+    id: producto.id,
+    nombre: producto.nombre,
+    precio: producto.precio,
+    img: producto.img,
+    tipo: "producto",
+  });
 
-  const getPrice = (p: Producto) => parseFloat(p.precio.replace(/\./g, ""));
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Show loading spinner until both mounted and CSS is loaded
+  if (!mounted || !cssLoaded) {
+    return (
+      <div className="container mt-4">
+        <div className="text-center">
+          <div
+            className="spinner-border text-primary"
+            role="status"
+            style={{ width: "3rem", height: "3rem" }}
+          >
+            <span className="visually-hidden">Cargando estilos...</span>
+          </div>
+          <p className="mt-2 text-muted">Cargando juegos...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
       <Head>
-        <title>Tienda de Videojuegos</title>
+        <title>Juegos - Tienda de Videojuegos</title>
+        <meta name="description" content="Descubre nuestros videojuegos" />
       </Head>
 
       <div className="container mt-4">
-        <div className="row">
-          {productsList.map((p: Producto) => (
-            <div key={p.id} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-              <div className="producto-card">
-                <a href={`/productos/${p.id}`} className="producto-link">
-                  <div className="producto-img">
-                    <img src={p.img} alt={p.nombre} className="img-fluid" />
-                  </div>
-                  <div className="producto-info text-center mt-2">
-                    <h5 className="producto-nombre">{p.nombre}</h5>
-                    <p className="producto-precio">{p.precio}</p>
-                  </div>
-                </a>
-                <button
-                  onClick={() => agregar(p)}
-                  className="btn btn-primary mt-2 w-100"
-                >
-                  Agregar al carrito
-                </button>
-              </div>
-            </div>
+        <h1 className="mb-4">Nuestros Juegos</h1>
+        <div
+          className="text-center"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "16px",
+          }}
+        >
+          {productsList.map((prod: Producto) => (
+            <ProductoCard
+              key={prod.id}
+              prod={prod}
+              itemType="producto"
+              buttonClass="btn-success"
+            />
           ))}
         </div>
-
-        {/* Carrito dinámico */}
-        <GenericCart
-          items={carrito}
-          onRemove={eliminar}
-          getPrice={getPrice}
-          renderItem={(p) => (
-            <div className="d-flex align-items-center">
-              <img src={p.img} width="50" className="me-2" />
-              <div>
-                <p className="mb-0">{p.nombre}</p>
-                <p className="mb-0">${p.precio}</p>
-              </div>
-            </div>
-          )}
-          title="Carrito de Videojuegos"
-        />
       </div>
     </>
   );

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useAuth } from "./authProvider";
+import { CarritoPanel } from "./components/carritoPanel";
 
 export function Navbar() {
   const { user, isLoading } = useAuth();
@@ -14,10 +15,14 @@ export function Navbar() {
 
   return (
     <header className="bg-dark text-white">
+      <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        async
+      />
       <div className="container d-flex justify-content-between align-items-center py-3">
         <h1 className="h4 m-0">
           <Link href="/" className="text-white text-decoration-none">
-            GoldenCat
+            Zmart
           </Link>
         </h1>
 
@@ -56,10 +61,7 @@ export function Navbar() {
         </nav>
 
         <div className="d-flex align-items-center gap-2">
-          <Link href="/carrito" className="btn btn-outline-light btn-sm">
-            Carrito
-          </Link>
-
+          <CarritoPanel />
           {!isLoading && (
             <>
               {user ? (
@@ -67,12 +69,17 @@ export function Navbar() {
                   <button
                     className="btn btn-outline-warning btn-sm text-white dropdown-toggle"
                     type="button"
+                    id="userDropdown"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
+                    data-bs-auto-close="true"
                   >
                     Hola, {user.nombre}
                   </button>
-                  <ul className="dropdown-menu">
+                  <ul
+                    className="dropdown-menu dropdown-menu-end"
+                    aria-labelledby="userDropdown"
+                  >
                     <li>
                       <Link href="/perfil" className="dropdown-item">
                         Mi Perfil

@@ -1,9 +1,9 @@
 [
-	{ "id": 1, "nombre": "Xbox Series S", "descripcion": "", "precio": "59.990", "img": "/images/consolas/xboxS.jpg", "lanzamiento":"Por confirmar", "marca":"Nintendo"},
-	{ "id": 2, "nombre": "Xbox Series X", "descripcion": "", "precio": "19.990", "img": "/images/consolas/xboxX.png", "lanzamiento":"Por confirmar", "marca":"Team Cherry" },
-	{ "id": 3, "nombre": "PS5", "descripcion": "", "precio": "59.990", "img": "/images/consolas/ps5.jpg", "lanzamiento":"2019", "marca":"Capcom" },
-	{ "id": 4, "nombre": "Nintendo Switch", "descripcion": "", "precio": "12.990", "img": "/images/consolas/Ns.png", "lanzamiento":"2011", "marca":"Mojang" },
-	{ "id": 5, "nombre": "Nintendo Switch 2", "descripcion": "", "precio": "69.990", "img": "/images/consolas/Ns2.jpg", "lanzamiento":"2023", "marca":"Capcom" },
-	{ "id": 6, "nombre": "Steam Deck", "descripcion": "", "precio": "59.990", "img":"/images/consolas/SteamD.jpg", "lanzamiento":"2023", "marca":"EA DICE" }
+	{ "id": 1001, "nombre": "Xbox Series S", "descripcion": "", "precio": "59.990", "img": "/images/consolas/xboxS.jpg", "lanzamiento":"Por confirmar", "marca":"Nintendo"},
+	{ "id": 1002, "nombre": "Xbox Series X", "descripcion": "", "precio": "19.990", "img": "/images/consolas/xboxX.png", "lanzamiento":"Por confirmar", "marca":"Team Cherry" },
+	{ "id": 1003, "nombre": "PS5", "descripcion": "", "precio": "59.990", "img": "/images/consolas/ps5.jpg", "lanzamiento":"2019", "marca":"Capcom" },
+	{ "id": 1004, "nombre": "Nintendo Switch", "descripcion": "", "precio": "12.990", "img": "/images/consolas/Ns.png", "lanzamiento":"2011", "marca":"Mojang" },
+	{ "id": 1005, "nombre": "Nintendo Switch 2", "descripcion": "", "precio": "69.990", "img": "/images/consolas/Ns2.jpg", "lanzamiento":"2023", "marca":"Capcom" },
+	{ "id": 1006, "nombre": "Steam Deck", "descripcion": "", "precio": "59.990", "img":"/images/consolas/SteamD.jpg", "lanzamiento":"2023", "marca":"EA DICE" }
 ]
 

@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import ConsolesList from "../../consoles.json";
-import { GenericCart } from "../../carrito";
+import { useCart, CartItem } from "../../components/carritoContext";
+import "./style.css";
 
 interface Console {
   id: number;
@@ -18,24 +18,23 @@ interface Console {
 export default function ConsolePage() {
   const params = useParams();
   const id = Number(params.id);
+  const { agregarAlCarrito, getItemCount } = useCart();
 
   const consoleItem = ConsolesList.find((c: Console) => c.id === id);
 
-  const [carrito, setCarrito] = useState<Console[]>([]);
-
-  useEffect(() => {
-    const data = localStorage.getItem("carrito");
-    if (data) setCarrito(JSON.parse(data));
-  }, []);
-
-  const agregarAlCarrito = (c: Console) => {
-    const nuevoCarrito = [...carrito, c];
-    setCarrito(nuevoCarrito);
-    localStorage.setItem("carrito", JSON.stringify(nuevoCarrito));
-  };
-
   if (!consoleItem)
     return <p className="text-center mt-5">Consola no encontrada</p>;
+
+  // Create simplified cart item with only essential details
+  const cartConsole: CartItem = {
+    id: consoleItem.id,
+    nombre: consoleItem.nombre,
+    precio: consoleItem.precio,
+    img: consoleItem.img,
+    tipo: "consola",
+  };
+
+  const itemCount = getItemCount(consoleItem.id);
 
   return (
     <div className="container mt-5">
@@ -60,35 +59,20 @@ export default function ConsolePage() {
               <strong>Lanzamiento: </strong>
               {consoleItem.lanzamiento}
             </li>
+            {itemCount > 0 && (
+              <li>
+                <strong>En carrito: </strong>
+                <span className="badge bg-primary">{itemCount}</span>
+              </li>
+            )}
           </ul>
           <button
             className="btn btn-primary btn-lg mt-3"
-            onClick={() => agregarAlCarrito(consoleItem)}
+            onClick={() => agregarAlCarrito(cartConsole)}
           >
             Agregar al carrito
           </button>
         </div>
-      </div>
-
-      {/* ✅ Carrito dinámico */}
-      <div className="mt-5">
-        <GenericCart
-          items={carrito}
-          onRemove={(index) =>
-            setCarrito(carrito.filter((_, i) => i !== index))
-          }
-          getPrice={(c) => parseFloat(c.precio.replace(/\./g, ""))}
-          renderItem={(c) => (
-            <div className="d-flex align-items-center">
-              <img src={c.img} width="50" className="me-2" />
-              <div>
-                <p className="mb-0">{c.nombre}</p>
-                <p className="mb-0">${c.precio}</p>
-              </div>
-            </div>
-          )}
-          title="Carrito de Consolas"
-        />
       </div>
     </div>
   );

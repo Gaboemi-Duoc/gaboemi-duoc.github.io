@@ -1,10 +1,9 @@
 "use client";
-
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
 import Head from "next/head";
 import ConsolesList from "../consoles.json";
-import { GenericCart } from "../carrito";
+import { useCart, CartItem } from "../components/carritoContext";
+import { ProductoCard } from "../components/productCard";
 
 interface Console {
   id: number;
@@ -16,77 +15,138 @@ interface Console {
   lanzamiento: string;
 }
 
-interface ConsoleProps {
-  console: Console;
-  onAdd: (console: Console) => void;
+// CSS loading check hook
+function useCssLoaded() {
+  const [cssLoaded, setCssLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkCssLoaded = () => {
+      // Check if Bootstrap CSS is loaded by testing a Bootstrap-specific class
+      const testElement = document.createElement("div");
+      testElement.className = "container";
+      document.body.appendChild(testElement);
+
+      const computedStyle = window.getComputedStyle(testElement);
+      const isLoaded =
+        computedStyle.display !== "inline" && computedStyle.maxWidth !== "";
+
+      document.body.removeChild(testElement);
+      return isLoaded;
+    };
+
+    const waitForCss = () => {
+      if (checkCssLoaded()) {
+        setCssLoaded(true);
+      } else {
+        // If not loaded yet, check again after a short delay
+        const interval = setInterval(() => {
+          if (checkCssLoaded()) {
+            setCssLoaded(true);
+            clearInterval(interval);
+          }
+        }, 50);
+
+        // Fallback: if CSS doesn't load within 3 seconds, proceed anyway
+        const timeout = setTimeout(() => {
+          setCssLoaded(true);
+          clearInterval(interval);
+        }, 3000);
+
+        return () => {
+          clearInterval(interval);
+          clearTimeout(timeout);
+        };
+      }
+    };
+
+    // Wait for DOM to be ready
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", waitForCss);
+    } else {
+      waitForCss();
+    }
+
+    // Also listen for window load event as backup
+    window.addEventListener("load", waitForCss);
+
+    return () => {
+      window.removeEventListener("load", waitForCss);
+      document.removeEventListener("DOMContentLoaded", waitForCss);
+    };
+  }, []);
+
+  return cssLoaded;
 }
 
-interface CarritoProps {
-  carrito: Console[];
-  onRemove: (index: number) => void;
-}
+export default function ConsolasPage() {
+  const { agregarAlCarrito } = useCart();
+  const [mounted, setMounted] = useState(false);
+  const cssLoaded = useCssLoaded();
 
-const consoles: Console[] = ConsolesList;
+  const createCartItem = (consoleItem: Console): CartItem => ({
+    id: consoleItem.id,
+    nombre: consoleItem.nombre,
+    precio: consoleItem.precio,
+    img: consoleItem.img,
+    tipo: "consola",
+  });
 
-function ConsoleCard({ console, onAdd }: ConsoleProps) {
-  return (
-    <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-      <div className="producto-card">
-        <a href={`/consolas/${console.id}`} className="producto-link">
-          <div className="producto-img">
-            <img src={console.img} alt={console.nombre} className="img-fluid" />
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Show loading spinner until both mounted and CSS is loaded
+  if (!mounted || !cssLoaded) {
+    return (
+      <div className="container mt-4">
+        <div className="text-center">
+          <div
+            className="spinner-border text-primary"
+            role="status"
+            style={{ width: "3rem", height: "3rem" }}
+          >
+            <span className="visually-hidden">Cargando estilos...</span>
           </div>
-          <div className="producto-info text-center mt-2">
-            <h5 className="producto-nombre">{console.nombre}</h5>
-            <p className="producto-precio">{console.precio}</p>
-          </div>
-        </a>
-        <button
-          onClick={() => onAdd(console)}
-          className="btn btn-primary mt-2 w-100"
-        >
-          Agregar al carrito
-        </button>
+          <p className="mt-2 text-muted">Cargando consolas...</p>
+        </div>
       </div>
-    </div>
-  );
-}
-export default function Page() {
-  const [carrito, setCarrito] = useState<Console[]>([]);
-
-  const agregar = (c: Console) => setCarrito([...carrito, c]);
-  const eliminar = (index: number) =>
-    setCarrito(carrito.filter((_, i) => i !== index));
+    );
+  }
 
   return (
     <>
       <Head>
-        <title>Tienda de Consolas</title>
+        <title>Consolas - Tienda de Videojuegos</title>
+        <meta name="description" content="Descubre nuestras consolas" />
       </Head>
 
       <div className="container mt-4">
-        <div className="row">
-          {consoles.map((c) => (
-            <ConsoleCard key={c.id} console={c} onAdd={agregar} />
+        <h1 className="mb-4">Nuestras Consolas</h1>
+        <div
+          className="text-center"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "16px",
+          }}
+        >
+          {ConsolesList.map((consoleItem: Console) => (
+            <ProductoCard
+              key={consoleItem.id}
+              prod={{
+                ...consoleItem,
+                // Map console properties to match Producto interface
+                genero: "",
+                tamano: "",
+                jugadores: 0,
+                desarrollador: consoleItem.marca,
+              }}
+              itemType="consola"
+              buttonClass="btn-success"
+            />
           ))}
         </div>
-
-        {/* ✅ Aquí va el carrito */}
-        <GenericCart
-          items={carrito}
-          onRemove={eliminar}
-          getPrice={(c) => parseFloat(c.precio.replace(/\./g, ""))}
-          renderItem={(c) => (
-            <div className="d-flex align-items-center">
-              <img src={c.img} width="50" className="me-2" />
-              <div>
-                <p className="mb-0">{c.nombre}</p>
-                <p className="mb-0">${c.precio}</p>
-              </div>
-            </div>
-          )}
-          title="Carrito de Consolas"
-        />
       </div>
     </>
   );
