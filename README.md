@@ -12,3 +12,6 @@ Documentacion:
 https://gaboemi-duoc-github-io.vercel.app/
 # DASHBOARD
 - https://vercel.com/gaboemi-duocs-projects/gaboemi-duoc-github-io
+
+Install Bum
+powershell -c "irm bun.sh/install.ps1|iex"

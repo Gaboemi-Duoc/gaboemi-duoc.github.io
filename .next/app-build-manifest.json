@@ -1,0 +1,100 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/chunks/app/_not-found/page-7b7252db2e40b8f9.js"
+    ],
+    "/api/login/route": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/chunks/app/api/login/route-a7ef658dc3522374.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/css/5c6c44dd937e9249.css",
+      "static/css/3c177ffefca10487.css",
+      "static/chunks/app/layout-df580f6c1d8421cb.js"
+    ],
+    "/api/register/route": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/chunks/app/api/register/route-382f1597f1df1f7d.js"
+    ],
+    "/consolas/[id]/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/css/11148ff86df27c62.css",
+      "static/chunks/app/consolas/[id]/page-a955a54736ccc409.js"
+    ],
+    "/carrito/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/chunks/app/carrito/page-13f29e4d08f1c9e2.js"
+    ],
+    "/contacto/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/chunks/app/contacto/page-81f873f0a0b6af1b.js"
+    ],
+    "/consolas/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/chunks/app/consolas/page-225121209b607fa5.js"
+    ],
+    "/register/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/chunks/app/register/page-bbe19a007b2d8fe5.js"
+    ],
+    "/login/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/chunks/app/login/page-0e887ad6dcd5ca38.js"
+    ],
+    "/productos/[id]/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/css/11148ff86df27c62.css",
+      "static/chunks/app/productos/[id]/page-5a8b9939fb510595.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/css/11148ff86df27c62.css",
+      "static/chunks/app/page-73ecc570abf906aa.js"
+    ],
+    "/productos/page": [
+      "static/chunks/webpack-73db374651246d7e.js",
+      "static/chunks/4bd1b696-f7ca9926d922dcc1.js",
+      "static/chunks/587-c0ac67f87e4c20d3.js",
+      "static/chunks/main-app-3559fd0328fc9691.js",
+      "static/chunks/app/productos/page-bd9f6f60651ba815.js"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "/api/login/route": "app/api/login/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/register/route": "app/api/register/route.js",
+  "/consolas/[id]/page": "app/consolas/[id]/page.js",
+  "/carrito/page": "app/carrito/page.js",
+  "/contacto/page": "app/contacto/page.js",
+  "/consolas/page": "app/consolas/page.js",
+  "/register/page": "app/register/page.js",
+  "/login/page": "app/login/page.js",
+  "/productos/[id]/page": "app/productos/[id]/page.js",
+  "/page": "app/page.js",
+  "/productos/page": "app/productos/page.js"
+}
