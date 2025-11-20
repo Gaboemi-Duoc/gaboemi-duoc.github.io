@@ -15,5 +15,7 @@ https://gaboemi-duoc-github-io.vercel.app/
 
 Install Bun to run Next locally
 powershell -c "irm bun.sh/install.ps1|iex"
+bun install
 bun init
+bun run build
 bun run start
