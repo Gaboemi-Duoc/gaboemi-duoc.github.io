@@ -15,16 +15,29 @@
   --border-dark: rgba(0, 0, 0, 0.2);
 }
 
-/* ------------------------------ MODO AUTOMÁTICO (DARK/LIGHT) ------------------------------ */
+/* ------------------------------ MODO MANUAL (BOTÓN DARK/LIGHT) ------------------------------ */
+:root[data-theme="light"] {
+  --background: var(--bg-light);
+  --foreground: var(--foreground-light);
+  --card-bg: #ffffff;
+}
+
+:root[data-theme="dark"] {
+  --background: var(--bg-dark);
+  --foreground: var(--foreground-dark);
+  --card-bg: #1e1e1e;
+}
+
+/* ------------------------------ MODO AUTOMÁTICO (SI NO SE USA BOTÓN) ------------------------------ */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --background: var(--bg-dark);
     --foreground: var(--foreground-dark);
   }
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
+  :root:not([data-theme]) {
     --background: var(--bg-light);
     --foreground: var(--foreground-light);
   }
@@ -32,8 +45,8 @@
 
 /* ------------------------------ ESTILO GENERAL ------------------------------ */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--background) !important;
+  color: var(--foreground) !important;
   font-family: "Inter", "Arial", sans-serif;
   margin: 0;
   padding: 0;
