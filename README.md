@@ -13,7 +13,13 @@ https://gaboemi-duoc-github-io.vercel.app/
 # DASHBOARD
 - https://vercel.com/gaboemi-duocs-projects/gaboemi-duoc-github-io
 
-Install Bun to run Next locally
+# API
+- goldencatapi-production.up.railway.app
+
+# SQL
+- ep-autumn-bread-acsvl4jx-pooler.sa-east-1.aws.neon.tech
+
+## Install Bun to run Next locally
 powershell -c "irm bun.sh/install.ps1|iex"
 bun install
 bun init
