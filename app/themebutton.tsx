@@ -3,38 +3,34 @@
 import { useEffect, useState } from "react";
 
 export default function ThemeButton() {
-  const [theme, setTheme] = useState<"light" | "dark" | null>(null);
+  const [theme, setTheme] = useState("light");
 
-  // Cargar del localStorage
   useEffect(() => {
-    const saved = localStorage.getItem("theme");
+    // Obtener tema guardado
+    const savedTheme = localStorage.getItem("theme") || "light";
+    setTheme(savedTheme);
 
-    if (saved === "light" || saved === "dark") {
-      document.documentElement.setAttribute("data-theme", saved);
-      setTheme(saved);
-      return;
-    }
-
-    // Si no existe, se usa modo automático
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const autoTheme = prefersDark ? "dark" : "light";
-
-    document.documentElement.setAttribute("data-theme", autoTheme);
-    setTheme(autoTheme);
+    // APLICAR TEMA AL <html>
+    document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
+    const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
+
+    // APLICAR CAMBIO
     document.documentElement.setAttribute("data-theme", newTheme);
+
+    // Guardar
     localStorage.setItem("theme", newTheme);
   };
 
-  if (!theme) return null;
-
   return (
-    <button className="btn btn-secondary" onClick={toggleTheme}>
-      {theme === "dark" ? "Modo Claro ☀️" : "Modo Oscuro 🌙"}
+    <button
+      className="btn btn-outline-warning btn-sm d-flex align-items-center"
+      onClick={toggleTheme}
+    >
+      {theme === "light" ? "🌙 Modo Oscuro" : "☀️ Modo Claro"}
     </button>
   );
 }

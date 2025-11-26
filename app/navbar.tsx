@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "./authProvider";
 import { CarritoPanel } from "./components/carritoPanel";
+import ThemeButton from "./themebutton"; // Usa el botón Bootstrap que ya hicimos
 
 export function Navbar() {
   const { user, isLoading } = useAuth();
@@ -19,7 +20,9 @@ export function Navbar() {
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         async
       />
+
       <div className="container d-flex justify-content-between align-items-center py-3">
+        
         <h1 className="h4 m-0">
           <Link href="/" className="text-white text-decoration-none">
             Zmart
@@ -34,34 +37,33 @@ export function Navbar() {
               </Link>
             </li>
             <li>
-              <Link
-                href="/productos"
-                className="text-white text-decoration-none"
-              >
+              <Link href="/productos" className="text-white text-decoration-none">
                 Juegos
               </Link>
             </li>
             <li>
-              <Link
-                href="/consolas"
-                className="text-white text-decoration-none"
-              >
+              <Link href="/consolas" className="text-white text-decoration-none">
                 Consolas
               </Link>
             </li>
             <li>
-              <Link
-                href="/contacto"
-                className="text-white text-decoration-none"
-              >
+              <Link href="/contacto" className="text-white text-decoration-none">
                 Contacto
               </Link>
             </li>
           </ul>
         </nav>
 
-        <div className="d-flex align-items-center gap-2">
+        {/* --- SECCIÓN DERECHA: Tema + Carrito + Login --- */}
+        <div className="d-flex align-items-center gap-3">
+
+          {/* Botón de tema con Bootstrap */}
+          <ThemeButton />
+
+          {/* Carrito */}
           <CarritoPanel />
+
+          {/* Usuario */}
           {!isLoading && (
             <>
               {user ? (
@@ -76,6 +78,7 @@ export function Navbar() {
                   >
                     Hola, {user.nombre}
                   </button>
+
                   <ul
                     className="dropdown-menu dropdown-menu-end"
                     aria-labelledby="userDropdown"

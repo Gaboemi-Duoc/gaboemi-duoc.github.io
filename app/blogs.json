@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "titulo": "Los mejores juegos del año para Xbox Series S",
+    "resumen": "Un análisis de los títulos más destacados que aprovechan el rendimiento de la Xbox Series S.",
+    "img": "/images/consolas/Ns.png",
+    "fecha": "2025-01-10",
+    "autor": "Equipo GamerLab"
+  },
+  {
+    "id": 2,
+    "titulo": "Xbox Series X: los juegos que mejor exprimen su potencia",
+    "resumen": "Exploramos los títulos que alcanzan gráficos y rendimiento superiores en la consola insignia de Microsoft.",
+    "img": "/images/consolas/Ns2.jpg",
+    "fecha": "2025-01-12",
+    "autor": "Lucía Méndez"
+  },
+  {
+    "id": 3,
+    "titulo": "PS5 en 2025: exclusivos que marcarán el año",
+    "resumen": "PlayStation continúa apostando por exclusivos cinematográficos. Aquí están los más esperados.",
+    "img": "/images/consolas/ps5.jpg",
+    "fecha": "2025-01-15",
+    "autor": "Javier Soto"
+  },
+  {
+    "id": 4,
+    "titulo": "Nintendo Switch: juegos que siguen sorprendiendo",
+    "resumen": "Aunque lleva años en el mercado, la Switch sigue entregando joyas imperdibles.",
+    "img": "/images/consolas/psFalsa.jpg",
+    "fecha": "2025-01-18",
+    "autor": "María Rivas"
+  },
+  {
+    "id": 5,
+    "titulo": "Nintendo Switch 2: títulos esperados para su lanzamiento",
+    "resumen": "La nueva Switch promete mayor potencia y una línea inicial de juegos muy prometedora.",
+    "img": "/images/consolas/Ns2.jpg",
+    "fecha": "2025-01-20",
+    "autor": "Tomás Aguilera"
+  },
+  {
+    "id": 6,
+    "titulo": "Steam Deck: los mejores juegos para jugar en portátil",
+    "resumen": "Revisamos los títulos que mejor funcionan y aprovechan la Steam Deck en 2025.",
+    "img": "/images/consolas/SteamD.jpg",
+    "fecha": "2025-01-22",
+    "autor": "Carla Mendoza"
+  }
+]

@@ -10,5 +10,11 @@
     "nombre": "Test",
     "correo": "test@gmail.com",
     "password": "test"
+  },
+  {
+    "id": 1764163471837,
+    "nombre": "zato",
+    "correo": "minizato@gmail.com",
+    "password": "zatito"
   }
 ]

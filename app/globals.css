@@ -20,28 +20,16 @@
   --background: var(--bg-light);
   --foreground: var(--foreground-light);
   --card-bg: #ffffff;
+  --border-color: var(--border-dark);
 }
 
 :root[data-theme="dark"] {
   --background: var(--bg-dark);
   --foreground: var(--foreground-dark);
   --card-bg: #1e1e1e;
+  --border-color: var(--border-light);
 }
 
-/* ------------------------------ MODO AUTOMÁTICO (SI NO SE USA BOTÓN) ------------------------------ */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --background: var(--bg-dark);
-    --foreground: var(--foreground-dark);
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme]) {
-    --background: var(--bg-light);
-    --foreground: var(--foreground-light);
-  }
-}
 
 /* ------------------------------ ESTILO GENERAL ------------------------------ */
 body {

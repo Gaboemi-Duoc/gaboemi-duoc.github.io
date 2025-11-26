@@ -1,0 +1,110 @@
+.perfil-container {
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+  background: linear-gradient(140deg, #1b1f2a, #0e1218, #1a2230);
+  min-height: 100vh;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+/* ----- PANEL PRINCIPAL ----- */
+.perfil-main {
+  flex: 3;
+}
+
+.perfil-header {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: rgba(255,255,255,0.04);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.perfil-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+.perfil-nombre {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.perfil-links a {
+  color: #7bb1ff;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.perfil-btn {
+  margin-top: 10px;
+  background: #1a73ff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.perfil-btn:hover {
+  background: #5293ff;
+}
+
+/* ----- ACTIVIDAD ----- */
+.perfil-section {
+  margin-top: 30px;
+}
+
+.section-title {
+  font-size: 20px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 10px;
+}
+
+.actividad-card {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.actividad-img {
+  width: 110px;
+  height: 60px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* ----- PANEL DERECHO ----- */
+.perfil-side {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+.side-status {
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.side-card {
+  background: rgba(255,255,255,0.04);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.badges {
+  font-size: 30px;
+}

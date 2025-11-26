@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { AuthProvider } from "./authProvider";
 import { Navbar } from "./navbar";
 import { CartProvider } from "./components/carritoContext";
-import ThemeButton from "./themebutton"; // <-- AGREGADO
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +26,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
       <body
@@ -36,13 +34,8 @@ export default function RootLayout({
         <CartProvider>
           <AuthProvider>
 
-            {/* NAVBAR con el botón de tema adentro */}
+            {/* NAVBAR */}
             <Navbar />
-
-            {/* YA NO VA AQUÍ EL BOTÓN 💥 */}
-            <div className="container mt-3 text-end">
-              <ThemeButton />
-            </div> 
 
             <main className="container-fluid flex-grow-1 d-flex flex-column">
               <div className="row justify-content-center flex-grow-1">
