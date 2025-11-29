@@ -17,8 +17,10 @@ export interface User {
 
 class UserService {
     testConnection() {
-        return axios.get(`https://goldencatapi-production.up.railway.app`);
+        // Aquí debes llamar a un endpoint REAL que SÍ existe
+        return axios.get(`${BASE_URL}`);
     }
+
     login(loginRequest: LoginRequest): Promise<AxiosResponse<string>> {
         return axios.post(`${BASE_URL}/login`, loginRequest);
     }
@@ -39,5 +41,6 @@ class UserService {
         return axios.delete(`${BASE_URL}/${id}`);
     }
 }
+
 
 export default new UserService();

@@ -22,11 +22,37 @@
   border-radius: 10px;
 }
 
+/* --- CONTENEDOR DEL AVATAR + BOTÓN --- */
+.avatar-container {
+  position: relative;
+  width: fit-content;
+}
+
+/* 🔵 Avatar estilo Steam */
 .perfil-avatar {
-  width: 140px;
-  height: 140px;
+  width: 184px;
+  height: 184px;
   border-radius: 5px;
   object-fit: cover;
+}
+
+/* ✏️ Botón flotante con ícono de lápiz */
+.avatar-edit-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: #ffffffcc;
+  border: 1px solid #ccc;
+  backdrop-filter: blur(4px);
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.avatar-edit-btn:hover {
+  background: white;
+  transform: scale(1.12);
 }
 
 .perfil-nombre {
@@ -50,6 +76,7 @@
   cursor: pointer;
   transition: 0.2s;
 }
+
 .perfil-btn:hover {
   background: #5293ff;
 }
@@ -76,9 +103,10 @@
   margin-bottom: 15px;
 }
 
+/* Actividad imagen */
 .actividad-img {
-  width: 110px;
-  height: 60px;
+  width: 200px;
+  height: 200px;
   border-radius: 4px;
   object-fit: cover;
 }
@@ -107,4 +135,67 @@
 
 .badges {
   font-size: 30px;
+}
+
+/* PEDIDOS RECIENTES */
+.pedido-img {
+  width: 250px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* --- CATÁLOGO EMERGENTE --- */
+.catalogo-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.catalogo-box {
+  background: #1b1f2a;
+  padding: 25px;
+  border-radius: 12px;
+  width: 60%;
+  text-align: center;
+}
+
+.catalogo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.catalogo-img {
+  width: 150px;
+  height: 200px;
+  border-radius: 8px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.catalogo-img:hover {
+  transform: scale(1.06);
+  border: 2px solid #4aa3ff;
+}
+
+/* Botón cerrar */
+.catalogo-cerrar {
+  margin-top: 20px;
+  background: #ff4444;
+  border: none;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
 }
