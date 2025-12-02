@@ -1,116 +1,78 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import ConsolesList from "../consoles.json";
-import { useCart, CartItem } from "../components/carritoContext";
 import { ProductoCard } from "../components/productCard";
+import { useCart } from "../components/carritoContext";
+import ProductService, { Product } from "../service/productService";
+import productsJSON from "../products.json"; // imágenes locales
 
-interface Console {
+// Interfaces
+interface LocalProductImage {
+  id_producto: number;
+  img: string;
+}
+
+// Interfaz para UI
+interface Producto {
   id: number;
   nombre: string;
   descripcion: string;
-  precio: string;
+  precio: string; // string para UI
   img: string;
-  marca: string;
+  genero: string;
+  tamano: string;
+  jugadores: number;
   lanzamiento: string;
+  desarrollador: string;
 }
 
-// CSS loading check hook
-function useCssLoaded() {
-  const [cssLoaded, setCssLoaded] = useState(false);
+export default function ConsolesPage() {
+  const [productsList, setProductsList] = useState<Producto[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkCssLoaded = () => {
-      // Check if Bootstrap CSS is loaded by testing a Bootstrap-specific class
-      const testElement = document.createElement("div");
-      testElement.className = "container";
-      document.body.appendChild(testElement);
+    async function fetchConsoles() {
+      try {
+        const res = await ProductService.getAllProducts();
+        const apiProducts: Product[] = res.data;
 
-      const computedStyle = window.getComputedStyle(testElement);
-      const isLoaded =
-        computedStyle.display !== "inline" && computedStyle.maxWidth !== "";
+        // Filtramos solo los productos que sean consolas
+        const consoles = apiProducts.filter((p) => p.cat === "Consolas");
 
-      document.body.removeChild(testElement);
-      return isLoaded;
-    };
+        const data: Producto[] = consoles.map((prod) => {
+          // Buscar imagen local
+          const localImg = (productsJSON as LocalProductImage[]).find(
+            (p) => p.id_producto === prod.id_producto
+          )?.img;
 
-    const waitForCss = () => {
-      if (checkCssLoaded()) {
-        setCssLoaded(true);
-      } else {
-        // If not loaded yet, check again after a short delay
-        const interval = setInterval(() => {
-          if (checkCssLoaded()) {
-            setCssLoaded(true);
-            clearInterval(interval);
-          }
-        }, 50);
+          return {
+            id: prod.id_producto,
+            nombre: prod.nombre,
+            descripcion: prod.description || "",
+            precio: prod.price.toString(), // <-- convertimos a string
+            img: prod.img || localImg || "/images/default.jpg",
+            genero: "N/A",                // valor por defecto para consolas
+            tamano: "N/A",                // valor por defecto para consolas
+            jugadores: 1,                 // valor por defecto
+            lanzamiento: "Por confirmar", // valor por defecto
+            desarrollador: "Desconocido", // valor por defecto
+          };
+        });
 
-        // Fallback: if CSS doesn't load within 3 seconds, proceed anyway
-        const timeout = setTimeout(() => {
-          setCssLoaded(true);
-          clearInterval(interval);
-        }, 3000);
-
-        return () => {
-          clearInterval(interval);
-          clearTimeout(timeout);
-        };
+        setProductsList(data);
+      } catch (err) {
+        console.error("Error al cargar consolas:", err);
+      } finally {
+        setLoading(false);
       }
-    };
-
-    // Wait for DOM to be ready
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", waitForCss);
-    } else {
-      waitForCss();
     }
 
-    // Also listen for window load event as backup
-    window.addEventListener("load", waitForCss);
-
-    return () => {
-      window.removeEventListener("load", waitForCss);
-      document.removeEventListener("DOMContentLoaded", waitForCss);
-    };
+    fetchConsoles();
   }, []);
 
-  return cssLoaded;
-}
-
-export default function ConsolasPage() {
-  const { agregarAlCarrito } = useCart();
-  const [mounted, setMounted] = useState(false);
-  const cssLoaded = useCssLoaded();
-
-  const createCartItem = (consoleItem: Console): CartItem => ({
-    id: consoleItem.id,
-    nombre: consoleItem.nombre,
-    precio: consoleItem.precio,
-    img: consoleItem.img,
-    tipo: "consola",
-  });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Show loading spinner until both mounted and CSS is loaded
-  if (!mounted || !cssLoaded) {
-    return (
-      <div className="container mt-4">
-        <div className="text-center">
-          <div
-            className="spinner-border text-primary"
-            role="status"
-            style={{ width: "3rem", height: "3rem" }}
-          >
-            <span className="visually-hidden">Cargando estilos...</span>
-          </div>
-          <p className="mt-2 text-muted">Cargando consolas...</p>
-        </div>
-      </div>
-    );
+  if (loading) {
+    return <div className="text-center mt-5">Cargando consolas...</div>;
   }
 
   return (
@@ -122,31 +84,28 @@ export default function ConsolasPage() {
 
       <div className="container mt-4">
         <h1 className="mb-4">Nuestras Consolas</h1>
-        <div
-          className="text-center"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            gap: "16px",
-          }}
-        >
-          {ConsolesList.map((consoleItem: Console) => (
-            <ProductoCard
-              key={consoleItem.id}
-              prod={{
-                ...consoleItem,
-                // Map console properties to match Producto interface
-                genero: "",
-                tamano: "",
-                jugadores: 0,
-                desarrollador: consoleItem.marca,
-              }}
-              itemType="consola"
-              buttonClass="btn-success"
-            />
-          ))}
-        </div>
+        {productsList.length === 0 ? (
+          <p className="text-center">No hay consolas disponibles.</p>
+        ) : (
+          <div
+            className="text-center"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "16px",
+            }}
+          >
+            {productsList.map((prod) => (
+              <ProductoCard
+                key={prod.id}
+                prod={prod}
+                itemType="producto"
+                buttonClass="btn-success"
+              />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

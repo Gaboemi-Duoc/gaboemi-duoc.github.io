@@ -1,15 +1,23 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import productsList from "../products.json";
-import { useCart, CartItem } from "../components/carritoContext";
 import { ProductoCard } from "../components/productCard";
+import { useCart } from "../components/carritoContext";
+import ProductService, { Product } from "../service/productService";
+import productsJSON from "../products.json"; // imágenes locales
+
+// Interfaces
+interface LocalProductImage {
+  id_producto: number;
+  img: string;
+}
 
 interface Producto {
   id: number;
   nombre: string;
   descripcion: string;
-  precio: string;
+  precio: string; // string para UI
   img: string;
   genero: string;
   tamano: string;
@@ -18,131 +26,85 @@ interface Producto {
   desarrollador: string;
 }
 
-// CSS loading check hook
-function useCssLoaded() {
-  const [cssLoaded, setCssLoaded] = useState(false);
+export default function ProductPage() {
+  const [productsList, setProductsList] = useState<Producto[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkCssLoaded = () => {
-      // Check if Bootstrap CSS is loaded by testing a Bootstrap-specific class
-      const testElement = document.createElement("div");
-      testElement.className = "container";
-      document.body.appendChild(testElement);
+    async function fetchProductos() {
+      try {
+        const res = await ProductService.getAllProducts();
+        const apiProductos: Product[] = res.data;
 
-      const computedStyle = window.getComputedStyle(testElement);
-      const isLoaded =
-        computedStyle.display !== "inline" && computedStyle.maxWidth !== "";
+        // Filtramos todos los productos que NO sean consolas
+        const juegos = apiProductos.filter((p) => p.cat !== "Consolas");
 
-      document.body.removeChild(testElement);
-      return isLoaded;
-    };
+        const data: Producto[] = juegos.map((prod) => {
+          // Buscar imagen local
+          const localImg = (productsJSON as LocalProductImage[]).find(
+            (p) => p.id_producto === prod.id_producto
+          )?.img;
 
-    const waitForCss = () => {
-      if (checkCssLoaded()) {
-        setCssLoaded(true);
-      } else {
-        // If not loaded yet, check again after a short delay
-        const interval = setInterval(() => {
-          if (checkCssLoaded()) {
-            setCssLoaded(true);
-            clearInterval(interval);
-          }
-        }, 50);
+          return {
+            id: prod.id_producto,
+            nombre: prod.nombre,
+            descripcion: prod.description,
+            precio: prod.price.toString(), // <-- convertimos a string
+            img: prod.img || localImg || "/images/default.jpg",
+            genero: "Acción", // por defecto
+            tamano: "1GB",    // por defecto
+            jugadores: 1,     // por defecto
+            lanzamiento: "2025-01-01", // por defecto
+            desarrollador: "Desconocido", // por defecto
+          };
+        });
 
-        // Fallback: if CSS doesn't load within 3 seconds, proceed anyway
-        const timeout = setTimeout(() => {
-          setCssLoaded(true);
-          clearInterval(interval);
-        }, 3000);
-
-        return () => {
-          clearInterval(interval);
-          clearTimeout(timeout);
-        };
+        setProductsList(data);
+      } catch (err) {
+        console.error("Error al cargar productos:", err);
+      } finally {
+        setLoading(false);
       }
-    };
-
-    // Wait for DOM to be ready
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", waitForCss);
-    } else {
-      waitForCss();
     }
 
-    // Also listen for window load event as backup
-    window.addEventListener("load", waitForCss);
-
-    return () => {
-      window.removeEventListener("load", waitForCss);
-      document.removeEventListener("DOMContentLoaded", waitForCss);
-    };
+    fetchProductos();
   }, []);
 
-  return cssLoaded;
-}
-
-export default function JuegosPage() {
-  const [mounted, setMounted] = useState(false);
-  const cssLoaded = useCssLoaded();
-  const { agregarAlCarrito } = useCart();
-
-  const createCartItem = (producto: Producto): CartItem => ({
-    id: producto.id,
-    nombre: producto.nombre,
-    precio: producto.precio,
-    img: producto.img,
-    tipo: "producto",
-  });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Show loading spinner until both mounted and CSS is loaded
-  if (!mounted || !cssLoaded) {
-    return (
-      <div className="container mt-4">
-        <div className="text-center">
-          <div
-            className="spinner-border text-primary"
-            role="status"
-            style={{ width: "3rem", height: "3rem" }}
-          >
-            <span className="visually-hidden">Cargando estilos...</span>
-          </div>
-          <p className="mt-2 text-muted">Cargando juegos...</p>
-        </div>
-      </div>
-    );
+  if (loading) {
+    return <div className="text-center mt-5">Cargando productos...</div>;
   }
 
   return (
     <>
       <Head>
-        <title>Juegos - Tienda de Videojuegos</title>
+        <title>Productos - Tienda de Videojuegos</title>
         <meta name="description" content="Descubre nuestros videojuegos" />
       </Head>
 
       <div className="container mt-4">
         <h1 className="mb-4">Nuestros Juegos</h1>
-        <div
-          className="text-center"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            gap: "16px",
-          }}
-        >
-          {productsList.map((prod: Producto) => (
-            <ProductoCard
-              key={prod.id}
-              prod={prod}
-              itemType="producto"
-              buttonClass="btn-success"
-            />
-          ))}
-        </div>
+        {productsList.length === 0 ? (
+          <p className="text-center">No hay productos disponibles.</p>
+        ) : (
+          <div
+            className="text-center"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "16px",
+            }}
+          >
+            {productsList.map((prod) => (
+              <ProductoCard
+                key={prod.id}
+                prod={prod}
+                itemType="producto"
+                buttonClass="btn-success"
+              />
+            ))}
+          </div>
+        )}
       </div>
     </>
   );

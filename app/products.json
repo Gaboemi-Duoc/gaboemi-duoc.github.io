@@ -7,5 +7,11 @@
   { "id_producto": 6, "img": "/images/juegos/disparo6.jpg" },
   { "id_producto": 7, "img": "/images/juegos/djg4d1m-9ac6075f-3922-4301-8ec4-7c83e270d964.png" },
   { "id_producto": 8, "img": "/images/juegos/0WxlWsN.jpeg" },
-  { "id_producto": 9, "img": "/images/juegos/hollowSilksong.jpg" }
+  { "id_producto": 9, "img": "/images/juegos/hollowSilksong.jpg" },
+  { "id_producto": 10, "img": "/images/consolas/xboxS.jpg" },
+  { "id_producto": 11, "img": "/images/consolas/xboxX.png" },
+  { "id_producto": 12, "img": "/images/consolas/ps5.jpg" },
+  { "id_producto": 13, "img": "/images/consolas/Ns.png" },
+  { "id_producto": 14, "img": "/images/consolas/Ns2.jpg" },
+  { "id_producto": 15, "img": "/images/consolas/SteamD.jpg" }
 ]
