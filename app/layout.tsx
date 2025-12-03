@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";  // CSS OK
+import Script from "next/script";               // <--- IMPORTANTE
+
 import { AuthProvider } from "./authProvider";
 import { Navbar } from "./navbar";
 import { CartProvider } from "./components/carritoContext";
@@ -21,11 +23,7 @@ export const metadata: Metadata = {
   description: "Compra los mejores juegos al mejor precio",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body
@@ -34,7 +32,6 @@ export default function RootLayout({
         <CartProvider>
           <AuthProvider>
 
-            {/* NAVBAR */}
             <Navbar />
 
             <main className="container-fluid flex-grow-1 d-flex flex-column">
@@ -48,12 +45,14 @@ export default function RootLayout({
                 <p className="mb-2 mb-md-0">
                   © 2025 Zmart - Todos los derechos reservados
                 </p>
-                <div></div>
               </div>
             </footer>
 
           </AuthProvider>
         </CartProvider>
+
+        {/* Bootstrap JS – NO rompe el layout */}
+        <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" />
       </body>
     </html>
   );
