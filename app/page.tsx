@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Head from "next/head";
-import productsList from "./products.json";
+import productsList from "./product_image_index.json";
 import "./productos/[id]/style.css";
 import { useCart, CartItem } from "./components/carritoContext";
 import { ProductoCard } from "./components/productCard";

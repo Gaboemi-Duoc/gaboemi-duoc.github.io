@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-// Simplified interface for cart items - only essential details
 export interface CartItem {
   id: number;
   nombre: string;

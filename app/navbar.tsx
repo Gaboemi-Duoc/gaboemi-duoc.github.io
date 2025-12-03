@@ -63,6 +63,7 @@ export function Navbar() {
             <li><Link href="/" className="text-white text-decoration-none">Inicio</Link></li>
             <li><Link href="/productos" className="text-white text-decoration-none">Juegos</Link></li>
             <li><Link href="/consolas" className="text-white text-decoration-none">Consolas</Link></li>
+            <li><Link href="/blogs" className="text-white text-decoration-none">Blogs</Link></li>
             <li><Link href="/contacto" className="text-white text-decoration-none">Contacto</Link></li>
           </ul>
         </nav>

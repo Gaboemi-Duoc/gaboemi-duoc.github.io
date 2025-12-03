@@ -5,7 +5,7 @@ import Head from "next/head";
 import { ProductoCard } from "../components/productCard";
 import { useCart } from "../components/carritoContext";
 import ProductService, { Product } from "../service/productService";
-import productsJSON from "../products.json"; // imágenes locales
+import productsJSON from "../product_image_index.json"; // imágenes locales
 
 // Interfaces
 interface LocalProductImage {

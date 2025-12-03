@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import ProductService, { Product } from "../../service/productService";
 
 // Importar JSON auxiliar con imágenes
-import productsJSON from "../../products.json";
+import productsJSON from "../../product_image_index.json";
 
 // Interfaz correcta según tu JSON
 interface LocalProductImage {
@@ -17,7 +17,7 @@ interface LocalProductImage {
 }
 
 // Cast correcto del JSON (evita errores TS)
-const products = productsJSON as LocalProductImage[];
+const productsImages = productsJSON as LocalProductImage[];
 
 export default function ProductoPage() {
   const { agregarAlCarrito, getItemCount } = useCart();
@@ -35,7 +35,7 @@ export default function ProductoPage() {
         const data: Product = response.data;
 
         // Buscar imagen local por id_producto
-        const localImage = products.find((p) => p.id_producto === id);
+        const localImage = productsImages.find((p) => p.id_producto === id);
 
         // Asignar imagen local o default
         data.img = localImage?.img ?? "/images/default.jpg";

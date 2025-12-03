@@ -13,6 +13,11 @@ export function CarritoPanel() {
     vaciarCarrito,
   } = useCart();
   const [isOpen, setIsOpen] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<{
+    success?: boolean;
+    message?: string;
+  } | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
   // Close panel when clicking outside
@@ -52,6 +57,127 @@ export function CarritoPanel() {
     };
   }, [isOpen]);
 
+  // Close payment status message after 5 seconds
+  useEffect(() => {
+    if (paymentStatus) {
+      const timer = setTimeout(() => {
+        setPaymentStatus(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [paymentStatus]);
+
+  // Handle Webpay payment
+  const handleWebpayPayment = async () => {
+    if (carrito.length === 0) {
+      setPaymentStatus({
+        success: false,
+        message: "El carrito está vacío",
+      });
+      setIsOpen(false);
+      return;
+    }
+
+    setIsProcessing(true);
+    setPaymentStatus(null);
+
+    try {
+      // Generate unique buy order and session ID
+      const buyOrder = `ORDER_${Date.now()}`;
+      const sessionId = `SESS_${Date.now()}_${Math.random()
+        .toString(36)
+        .substr(2, 9)}`;
+      
+      // Get current user from localStorage
+      const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+      const userId = currentUser.id || "guest";
+
+      // Amount must be integer (remove decimals)
+      const amount = Math.round(totalPrecio);
+
+      // Return URL for Webpay response
+      const returnUrl = `${window.location.origin}/pago/estado`;
+
+      // Create Webpay transaction
+      const response = await fetch("/api/webpay/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          buyOrder,
+          sessionId,
+          amount,
+          returnUrl,
+          userId,
+          cartItems: carrito.map(item => ({
+            id: item.id,
+            nombre: item.nombre,
+            precio: item.precio,
+            tipo: item.tipo,
+          })),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Handle API error response
+        const errorMessage = data.message || "Failed to create payment";
+        throw new Error(`${data.error || "Error"}: ${errorMessage}`);
+      }
+
+      if (!data.success) {
+        throw new Error("Failed to create payment transaction");
+      }
+
+      // Store payment data in localStorage for later verification
+      localStorage.setItem("pendingPayment", JSON.stringify({
+        token: data.token,
+        buyOrder,
+        sessionId,
+        amount,
+        cartItems: carrito,
+        timestamp: Date.now(),
+      }));
+
+      // Create and submit the form to redirect to Webpay
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = data.url;
+      form.style.display = "none";
+
+      const tokenInput = document.createElement("input");
+      tokenInput.type = "hidden";
+      tokenInput.name = "token_ws";
+      tokenInput.value = data.token;
+
+      form.appendChild(tokenInput);
+      document.body.appendChild(form);
+      
+      // Close cart panel before redirecting
+      setIsOpen(false);
+      form.submit();
+
+      // Optionally clear cart after successful payment initiation
+      // vaciarCarrito();
+
+    } catch (error) {
+      console.error("Payment error:", error);
+      
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : "Error al procesar el pago";
+      
+      setPaymentStatus({
+        success: false,
+        message: errorMessage,
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   // Group items by ID to calculate quantities
   const itemCounts = carrito.reduce((acc, item) => {
     acc[item.id] = (acc[item.id] || 0) + 1;
@@ -69,19 +195,56 @@ export function CarritoPanel() {
 
   return (
     <>
-      {/* Carrito Button - Reverted to original size and style */}
+      {/* Payment Status Toast */}
+      {paymentStatus && (
+        <div 
+          className="position-fixed top-0 end-0 mt-4 me-4" 
+          style={{ zIndex: 9999, minWidth: "300px" }}
+        >
+          <div 
+            className={`alert ${paymentStatus.success ? 'alert-success' : 'alert-danger'} alert-dismissible fade show shadow-lg`}
+            role="alert"
+          >
+            <div className="d-flex align-items-center">
+              <i className={`bi ${paymentStatus.success ? 'bi-check-circle' : 'bi-exclamation-triangle'} me-2`}></i>
+              <div>
+                <strong>{paymentStatus.success ? 'Éxito' : 'Error'}</strong>
+                <div className="small">{paymentStatus.message}</div>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => setPaymentStatus(null)}
+              aria-label="Cerrar"
+            ></button>
+          </div>
+        </div>
+      )}
+
+      {/* Carrito Button */}
       <div className="dropdown" ref={panelRef}>
         <button
           className="btn btn-outline-light btn-sm position-relative"
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
+          disabled={isProcessing}
         >
-          🛒 Carrito
-          {totalItems > 0 && (
-            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {totalItems > 99 ? "99+" : totalItems}
-            </span>
+          {isProcessing ? (
+            <>
+              <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+              Procesando...
+            </>
+          ) : (
+            <>
+              🛒 Carrito
+              {totalItems > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {totalItems > 99 ? "99+" : totalItems}
+                </span>
+              )}
+            </>
           )}
         </button>
 
@@ -111,6 +274,7 @@ export function CarritoPanel() {
               className="btn-close btn-close-white"
               onClick={() => setIsOpen(false)}
               aria-label="Cerrar carrito"
+              disabled={isProcessing}
             ></button>
           </div>
 
@@ -180,7 +344,7 @@ export function CarritoPanel() {
                             onClick={() =>
                               actualizarCantidad(itemIndex, quantity - 1)
                             }
-                            disabled={quantity <= 1}
+                            disabled={quantity <= 1 || isProcessing}
                           >
                             -
                           </button>
@@ -191,6 +355,7 @@ export function CarritoPanel() {
                             onClick={() =>
                               actualizarCantidad(itemIndex, quantity + 1)
                             }
+                            disabled={isProcessing}
                           >
                             +
                           </button>
@@ -201,6 +366,7 @@ export function CarritoPanel() {
                           className="btn btn-outline-danger btn-sm"
                           style={{ padding: "0.2rem 0.4rem" }}
                           title="Eliminar todos"
+                          disabled={isProcessing}
                         >
                           ×
                         </button>
@@ -225,6 +391,7 @@ export function CarritoPanel() {
                   <button
                     onClick={vaciarCarrito}
                     className="btn btn-outline-light btn-sm flex-fill"
+                    disabled={isProcessing}
                   >
                     Vaciar Carrito
                   </button>
@@ -236,14 +403,29 @@ export function CarritoPanel() {
                     Ver Detalles
                   </Link>
                 </div>
-
-                <Link
-                  href="/checkout"
-                  className="btn btn-success w-100 fw-bold"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Proceder al Pago
-                </Link>
+                <div className="d-grid gap-2">
+                  <button
+                    onClick={handleWebpayPayment}
+                    disabled={isProcessing}
+                    className="btn btn-success w-100 fw-bold d-flex align-items-center justify-content-center gap-2"
+                  >
+                    {isProcessing ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Procesando...
+                      </>
+                    ) : (
+                      <>
+                        <i className="bi bi-credit-card"></i>
+                        Proceder al Pago
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
             </>
           )}

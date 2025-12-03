@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useCart } from "../components/carritoContext";
+import { useRouter } from "next/navigation";
 
 // CSS loading check hook
 function useCssLoaded() {
@@ -72,11 +73,121 @@ export default function CartPage() {
   } = useCart();
 
   const [mounted, setMounted] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<{
+    success?: boolean;
+    message?: string;
+  } | null>(null);
   const cssLoaded = useCssLoaded();
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+  
+
+  const handleWebpayPayment = async () => {
+    if (carrito.length === 0) {
+      setPaymentStatus({
+        success: false,
+        message: "El carrito está vacío",
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    setPaymentStatus(null);
+
+    try {
+      // Generate unique buy order and session ID
+      const buyOrder = `ORDER_${Date.now()}`;
+      const sessionId = `SESS_${Date.now()}_${Math.random()
+        .toString(36)
+        .substr(2, 9)}`;
+      
+      // Get current user from localStorage
+      const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+      const userId = currentUser.id || "guest";
+
+      // Amount must be integer (remove decimals)
+      const amount = Math.round(totalPrecio);
+
+      // Return URL for Webpay response
+      const returnUrl = `${window.location.origin}/pago/estado`;
+
+      // Create Webpay transaction
+      const response = await fetch("/api/webpay/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          buyOrder,
+          sessionId,
+          amount,
+          returnUrl,
+          userId,
+          cartItems: carrito.map(item => ({
+            id: item.id,
+            nombre: item.nombre,
+            precio: item.precio,
+            tipo: item.tipo,
+          })),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Handle API error response
+        const errorMessage = data.message || "Failed to create payment";
+        throw new Error(`${data.error || "Error"}: ${errorMessage}`);
+      }
+
+      if (!data.success) {
+        throw new Error("Failed to create payment transaction");
+      }
+
+      // Create and submit the form to redirect to Webpay
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = data.url;
+      form.style.display = "none";
+
+      const tokenInput = document.createElement("input");
+      tokenInput.type = "hidden";
+      tokenInput.name = "token_ws";
+      tokenInput.value = data.token;
+
+      form.appendChild(tokenInput);
+      document.body.appendChild(form);
+      form.submit();
+
+      // Store payment data in localStorage for later verification
+      localStorage.setItem("pendingPayment", JSON.stringify({
+        token: data.token,
+        buyOrder,
+        sessionId,
+        amount,
+        cartItems: carrito,
+        timestamp: Date.now(),
+      }));
+
+    } catch (error) {
+      console.error("Payment error:", error);
+      
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : "Error al procesar el pago";
+      
+      setPaymentStatus({
+        success: false,
+        message: errorMessage,
+      });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   // Show loading spinner until both mounted and CSS is loaded
   if (!mounted || !cssLoaded) {
@@ -123,11 +234,29 @@ export default function CartPage() {
           <button
             className="btn btn-outline-danger btn-sm"
             onClick={vaciarCarrito}
+            disabled={isProcessing}
           >
             Vaciar Carrito
           </button>
         )}
       </div>
+
+      {/* Payment Status Messages */}
+      {paymentStatus && (
+        <div
+          className={`alert ${
+            paymentStatus.success ? "alert-success" : "alert-danger"
+          } alert-dismissible fade show`}
+          role="alert"
+        >
+          {paymentStatus.message}
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setPaymentStatus(null)}
+          ></button>
+        </div>
+      )}
 
       {carrito.length === 0 ? (
         <div className="text-center py-5">
@@ -197,7 +326,7 @@ export default function CartPage() {
                         onClick={() =>
                           actualizarCantidad(itemIndex, quantity - 1)
                         }
-                        disabled={quantity <= 1}
+                        disabled={quantity <= 1 || isProcessing}
                       >
                         -
                       </button>
@@ -210,6 +339,7 @@ export default function CartPage() {
                         onClick={() =>
                           actualizarCantidad(itemIndex, quantity + 1)
                         }
+                        disabled={isProcessing}
                       >
                         +
                       </button>
@@ -220,6 +350,7 @@ export default function CartPage() {
                       style={{ padding: "0.3rem 0.6rem" }}
                       onClick={() => eliminarDelCarrito(itemIndex)}
                       title="Eliminar del carrito"
+                      disabled={isProcessing}
                     >
                       ×
                     </button>
@@ -241,6 +372,9 @@ export default function CartPage() {
                 <h3 className="mb-0 text-success">
                   ${totalPrecio.toLocaleString()}
                 </h3>
+                <small className="text-muted">
+                  (${Math.round(totalPrecio).toLocaleString()} para Webpay)
+                </small>
               </div>
             </div>
 
@@ -248,9 +382,29 @@ export default function CartPage() {
               <Link href="/" className="btn btn-outline-light btn-lg">
                 Seguir Comprando
               </Link>
-              <Link href="/checkout" className="btn btn-warning btn-lg fw-bold">
-                Proceder al Pago
-              </Link>
+              
+              {/* Webpay Payment Button */}
+              <button
+                onClick={handleWebpayPayment}
+                disabled={isProcessing || carrito.length === 0}
+                className="btn btn-warning btn-lg fw-bold d-flex align-items-center gap-2"
+              >
+                {isProcessing ? (
+                  <>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Procesando...
+                  </>
+                ) : (
+                  <>
+                    <i className="bi bi-credit-card"></i>
+                    Pagar con Webpay
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </>

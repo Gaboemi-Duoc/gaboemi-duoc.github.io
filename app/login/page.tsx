@@ -104,42 +104,11 @@ export default function LoginPage() {
     console.error("Login error:", error);
   };
 
-  // Test different endpoints
-  const testEndpoints = async () => {
-    setMensaje("Probando endpoints...");
-    
-    try {
-      // Test base URL
-      const baseTest = await userService.testConnection();
-      setMensaje(prev => prev + ` ✓ Servidor activo (${baseTest.status})`);
-    } catch (error) {
-      setMensaje("❌ No se puede conectar al servidor Spring Boot");
-      return;
-    }
-
-    // Test if we can reach any user endpoint
-    try {
-      const userTest = await userService.getUserByID(1); // Try to get any user
-      setMensaje(prev => prev + " ✓ Endpoint de usuario funciona");
-    } catch (error) {
-      if (error instanceof AxiosError && error.response?.status === 404) {
-        setMensaje(prev => prev + " ❌ Endpoint /api/usuario no encontrado");
-      }
-    }
-  };
-
   return (
     <div className="max-w-md mx-auto mt-12 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Iniciar Sesión</h2>
             {/* Debug buttons */}
       <div className="mb-4 space-y-2">
-        <button 
-          onClick={testEndpoints}
-          className="w-full text-sm py-1 bg-blue-500 text-white rounded"
-          type="button"
-        >
-          Probar Endpoints
-        </button>
         <p className="text-xs text-gray-600 text-center">
           Si falla, verifique que Spring Boot esté ejecutándose en puerto 8080
         </p>
