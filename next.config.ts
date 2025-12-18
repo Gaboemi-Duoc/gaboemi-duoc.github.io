@@ -5,3 +5,15 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/consolas/:id',
+        destination: '/productos/:id',
+        permanent: true,
+      },
+    ];
+  },
+};

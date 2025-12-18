@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { ProductoCard } from "../components/productCard";
-import { useCart } from "../components/carritoContext";
 import ProductService, { Product } from "../service/productService";
-import productsJSON from "../product_image_index.json"; // imágenes locales
+import productsJSON from "../product_image_index.json";
 
 // Interfaces
 interface LocalProductImage {
@@ -13,33 +12,22 @@ interface LocalProductImage {
   img: string;
 }
 
-interface Producto {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: string; // string para UI
-  img: string;
-  genero: string;
-  tamano: string;
-  jugadores: number;
-  lanzamiento: string;
-  desarrollador: string;
-}
+// Import the interface
+import { ProductoForCard } from "../components/product";
 
 export default function ProductPage() {
-  const [productsList, setProductsList] = useState<Producto[]>([]);
+  const [productsList, setProductsList] = useState<ProductoForCard[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchProductos() {
       try {
-        const res = await ProductService.getAllProducts();
-        const apiProductos: Product[] = res.data;
+        const apiProductos = await ProductService.getAllProducts();
 
         // Filtramos todos los productos que NO sean consolas
         const juegos = apiProductos.filter((p) => p.cat !== "Consolas");
 
-        const data: Producto[] = juegos.map((prod) => {
+        const data: ProductoForCard[] = juegos.map((prod) => {
           // Buscar imagen local
           const localImg = (productsJSON as LocalProductImage[]).find(
             (p) => p.id_producto === prod.id_producto
@@ -48,14 +36,18 @@ export default function ProductPage() {
           return {
             id: prod.id_producto,
             nombre: prod.nombre,
-            descripcion: prod.description,
-            precio: prod.price.toString(), // <-- convertimos a string
+            descripcion: prod.description || "Sin descripción",
+            precio: prod.price.toString(), // Convert to string
             img: prod.img || localImg || "/images/default.jpg",
-            genero: "Acción", // por defecto
-            tamano: "1GB",    // por defecto
-            jugadores: 1,     // por defecto
-            lanzamiento: "2025-01-01", // por defecto
-            desarrollador: "Desconocido", // por defecto
+            genero: prod.cat || "Acción",
+            tamano: "N/A",
+            jugadores: 1,
+            lanzamiento: "Por confirmar",
+            desarrollador: prod.detail?.split(',')[0] || "Desconocido",
+            stock: prod.stock || 0,
+            cat: prod.cat || "Videojuego",
+            discount: prod.discount || 0,
+            detail: prod.detail
           };
         });
 

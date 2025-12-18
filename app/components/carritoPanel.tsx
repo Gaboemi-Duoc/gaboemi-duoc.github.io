@@ -10,7 +10,9 @@ export function CarritoPanel() {
     eliminarDelCarrito,
     actualizarCantidad,
     totalPrecio,
+    totalDescuento,
     vaciarCarrito,
+    calcularPrecioFinal,
   } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -114,7 +116,9 @@ export function CarritoPanel() {
             id: item.id,
             nombre: item.nombre,
             precio: item.precio,
+            precioFinal: item.precioFinal || calcularPrecioFinal(item.precio, item.discount),
             tipo: item.tipo,
+            discount: item.discount,
           })),
         }),
       });
@@ -184,14 +188,22 @@ export function CarritoPanel() {
     return acc;
   }, {} as Record<number, number>);
 
-  // Get unique items for display and sort them by ID for consistent order
+
+  // Get unique items for display and sort them by ID for consistent order - FIXED VERSION
   const uniqueItems = carrito
-    .filter(
-      (item, index, self) => index === self.findIndex((i) => i.id === item.id)
-    )
+    .filter((item, index, self) => {
+      // Find first occurrence of each item ID
+      return self.findIndex(i => i.id === item.id) === index;
+    })
     .sort((a, b) => a.id - b.id);
 
   const totalItems = carrito.length;
+
+  // Calculate savings summary
+  const totalOriginalPrice = carrito.reduce((acc, item) => {
+    const precioOriginal = item.precioOriginal || parseFloat(item.precio.replace(/\./g, ""));
+    return acc + precioOriginal;
+  }, 0);
 
   return (
     <>
@@ -295,21 +307,32 @@ export function CarritoPanel() {
                 {uniqueItems.map((prod) => {
                   const quantity = itemCounts[prod.id];
                   const itemIndex = carrito.findIndex((i) => i.id === prod.id);
-
+                  const precioFinal = prod.precioFinal || calcularPrecioFinal(prod.precio, prod.discount);
+                  const precioOriginal = prod.precioOriginal || parseFloat(prod.precio.replace(/\./g, ""));
+                  
                   return (
                     <div
                       key={prod.id}
                       className="cart-item d-flex justify-content-between align-items-center mb-2 p-2 border border-secondary rounded bg-dark text-white"
                     >
                       <div className="d-flex align-items-center flex-grow-1">
-                        <img
-                          src={prod.img}
-                          alt={prod.nombre}
-                          className="me-3 rounded"
-                          width="50"
-                          height="50"
-                          style={{ objectFit: "cover" }}
-                        />
+                        <div className="position-relative">
+                          <img
+                            src={prod.img}
+                            alt={prod.nombre}
+                            className="me-3 rounded"
+                            width="50"
+                            height="50"
+                            style={{ objectFit: "cover" }}
+                          />
+                          {/* Discount badge on image */}
+                          {prod.discount && prod.discount > 0 && (
+                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                              style={{ fontSize: "0.6rem", transform: "translate(-50%, -50%)" }}>
+                              -{prod.discount}%
+                            </span>
+                          )}
+                        </div>
                         <div className="flex-grow-1" style={{ minWidth: 0 }}>
                           <p
                             className="mb-1 fw-bold text-truncate text-white"
@@ -317,21 +340,36 @@ export function CarritoPanel() {
                           >
                             {prod.nombre}
                           </p>
+                          
+                          {/* Price display with discount */}
+                          <div className="mb-1">
+                            {prod.discount && prod.discount > 0 ? (
+                              <div className="d-flex flex-column">
+                                <span className="text-muted text-decoration-line-through small">
+                                  ${precioOriginal.toLocaleString()} c/u
+                                </span>
+                                <span className="text-warning fw-bold small">
+                                  ${precioFinal.toFixed(0).toLocaleString()} c/u
+                                  <span className="badge bg-success ms-2" style={{ fontSize: "0.6rem" }}>
+                                    Ahorras ${(precioOriginal - precioFinal).toFixed(0)}
+                                  </span>
+                                </span>
+                              </div>
+                            ) : (
+                              <span className="text-warning small">
+                                ${precioOriginal.toLocaleString()} c/u
+                              </span>
+                            )}
+                          </div>
+
                           <div className="d-flex justify-content-between align-items-center">
-                            <p className="mb-0 text-warning small">
-                              ${prod.precio} c/u
+                            <p className="mb-0 text-success small fw-bold">
+                              ${(precioFinal * quantity).toLocaleString()}
                             </p>
                             <span className="badge bg-warning text-dark rounded-pill ms-2">
                               {quantity}
                             </span>
                           </div>
-                          <p className="mb-0 text-success small fw-bold">
-                            $
-                            {(
-                              parseFloat(prod.precio.replace(/\./g, "")) *
-                              quantity
-                            ).toLocaleString()}
-                          </p>
                         </div>
                       </div>
 
@@ -378,13 +416,45 @@ export function CarritoPanel() {
 
               {/* Cart Summary */}
               <div className="border-top border-secondary pt-3">
+                {/* Savings Summary */}
+                {totalDescuento > 0 && (
+                  <div className="alert alert-success py-2 mb-3" style={{ fontSize: "0.85rem" }}>
+                    <div className="d-flex justify-content-between">
+                      <span>¡Estás ahorrando!</span>
+                      <span className="fw-bold">
+                        -${totalDescuento.toFixed(0).toLocaleString()}
+                      </span>
+                    </div>
+                    <div className="d-flex justify-content-between small text-muted">
+                      <span>Total sin descuento:</span>
+                      <span className="text-decoration-line-through">
+                        ${totalOriginalPrice.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <span className="fw-bold text-white">
-                    Total ({totalItems} items):
-                  </span>
-                  <span className="fw-bold text-warning fs-5">
-                    ${totalPrecio.toLocaleString()}
-                  </span>
+                  <div>
+                    <span className="fw-bold text-white">
+                      Total ({totalItems} items):
+                    </span>
+                    {totalDescuento > 0 && (
+                      <div className="small text-success">
+                        ¡Ahorraste ${totalDescuento.toFixed(0).toLocaleString()}!
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-end">
+                    {totalDescuento > 0 && (
+                      <div className="text-muted text-decoration-line-through small">
+                        ${totalOriginalPrice.toLocaleString()}
+                      </div>
+                    )}
+                    <span className="fw-bold text-warning fs-5">
+                      ${totalPrecio.toFixed(0).toLocaleString()}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="d-flex gap-2 mb-2">

@@ -7,7 +7,7 @@ import productsList from "./product_image_index.json";
 import "./productos/[id]/style.css";
 import { useCart, CartItem } from "./components/carritoContext";
 import { ProductoCard } from "./components/productCard";
-import ProductService, { Product } from "./service/productService"; // <-- import ProductService
+import ProductService, { Product } from "./service/productService";
 
 // Types
 interface Producto {
@@ -21,6 +21,8 @@ interface Producto {
   jugadores: number;
   lanzamiento: string;
   desarrollador: string;
+  discount?: number;
+  cat?: string;
 }
 
 export default function HomePage() {
@@ -29,18 +31,11 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
 
-  // Obtener producto individual si estamos en la ruta de detalle
-  const productoId = pathname ? parseInt(pathname.split("/").pop() || "") : null;
-  const productoDetalle = productoId
-    ? productos.find((p) => p.id === productoId)
-    : null;
-
   // Fetch productos desde la API
   useEffect(() => {
     async function fetchProductos() {
       try {
-        const res = await ProductService.getAllProducts();
-        const apiProductos: Product[] = res.data;
+        const apiProductos = await ProductService.getAllProducts();
 
         const data: Producto[] = apiProductos.map((prod) => {
           // Buscar imagen local por id_producto
@@ -49,14 +44,16 @@ export default function HomePage() {
           return {
             id: prod.id_producto,
             nombre: prod.nombre,
-            descripcion: prod.description,
+            descripcion: prod.description || "Sin descripción",
             precio: prod.price.toString(),
             img: prod.img || localImg || "/images/default.jpg",
-            genero: "Acción",             // valor por defecto
-            tamano: "1GB",                // valor por defecto
-            jugadores: 1,                 // valor por defecto
-            lanzamiento: "2025-01-01",   // valor por defecto
-            desarrollador: "Desconocido", // valor por defecto
+            genero: prod.cat || "Acción",
+            tamano: "N/A",
+            jugadores: 1,
+            lanzamiento: "Por confirmar",
+            desarrollador: "Desconocido",
+            discount: prod.discount || 0,
+            cat: prod.cat
           };
         });
 
@@ -125,41 +122,8 @@ export default function HomePage() {
     );
   };
 
-  // ProductoDetalle Component
-  const ProductoDetalle = ({ producto }: { producto: Producto }) => {
-    const { agregarAlCarrito } = useCart();
-
-    const cartItem: CartItem = {
-      id: producto.id,
-      nombre: producto.nombre,
-      precio: producto.precio,
-      img: producto.img,
-      tipo: "producto",
-    };
-
-    return (
-      <div className="producto-detalle mt-4">
-        <div className="row">
-          <div className="col-md-6">
-            <img src={producto.img} alt={producto.nombre} className="img-fluid rounded shadow" />
-          </div>
-          <div className="col-md-6">
-            <h1>{producto.nombre}</h1>
-            <p className="lead text-success">${producto.precio}</p>
-            <p>{producto.descripcion}</p>
-            <div className="mt-3">
-              <p><strong>Género:</strong> {producto.genero}</p>
-              <p><strong>Tamaño:</strong> {producto.tamano}</p>
-              <p><strong>Jugadores:</strong> {producto.jugadores}</p>
-              <p><strong>Lanzamiento:</strong> {producto.lanzamiento}</p>
-              <p><strong>Desarrollador:</strong> {producto.desarrollador}</p>
-            </div>
-            <button className="btn btn-success btn-lg mt-3" onClick={() => agregarAlCarrito(cartItem)}>Agregar al carrito</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  // Get only featured products (limit to 8)
+  const featuredProducts = productos.slice(0, 8);
 
   return (
     <>
@@ -170,15 +134,25 @@ export default function HomePage() {
 
       <div className="container mt-4">
         <Carrusel />
-        {productoDetalle ? (
-          <ProductoDetalle producto={productoDetalle} />
-        ) : (
-          <div className="mt-4 text-center" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "16px" }}>
-            {productos.map((prod) => (
-              <ProductoCard key={prod.id} prod={prod} itemType="producto" buttonClass="btn-success" />
-            ))}
-          </div>
-        )}
+        
+        {/* Only show Featured Products section */}
+        <div className="mt-5">
+          <h2 className="text-center mb-4">Productos Destacados</h2>
+          {featuredProducts.length === 0 ? (
+            <p className="text-center text-muted">No hay productos disponibles en este momento.</p>
+          ) : (
+            <div className="text-center" style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "16px" }}>
+              {featuredProducts.map((prod) => (
+                <ProductoCard 
+                  key={prod.id} 
+                  prod={prod} 
+                  itemType={prod.cat === "Consolas" ? "consola" : "producto"} 
+                  buttonClass={prod.cat === "Consolas" ? "btn-primary" : "btn-success"} 
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 // URL base de la API
 const BASE_URL = "https://goldencatapi-production.up.railway.app/api/product";
@@ -18,39 +18,63 @@ export interface Product {
 
 class ProductService {
   // Obtener todos los productos
-  getAllProducts(): Promise<AxiosResponse<Product[]>> {
-    return axios.get(BASE_URL);
+  async getAllProducts(): Promise<Product[]> {
+    const response = await axios.get<Product[]>(BASE_URL);
+    return response.data;
   }
 
   // Obtener un producto por ID
-  getProductByID(id: number): Promise<AxiosResponse<Product>> {
-    return axios.get(`${BASE_URL}/${id}`);
+  async getProductByID(id: number): Promise<Product> {
+    const response = await axios.get<Product>(`${BASE_URL}/${id}`);
+    return response.data;
   }
 
   // Crear un producto
-  createProduct(product: Product): Promise<AxiosResponse<Product>> {
-    return axios.post(BASE_URL, product);
+  async createProduct(product: Product): Promise<Product> {
+    const response = await axios.post<Product>(BASE_URL, product);
+    return response.data;
   }
 
   // Actualizar un producto
-  updateProduct(
-    id: number,
-    product: Partial<Product>
-  ): Promise<AxiosResponse<Product>> {
-    return axios.put(`${BASE_URL}/${id}`, product);
+  async updateProduct(id: number, product: Partial<Product>): Promise<Product> {
+    const response = await axios.put<Product>(`${BASE_URL}/${id}`, product);
+    return response.data;
   }
 
   // Eliminar un producto
-  deleteProduct(id: number): Promise<AxiosResponse<void>> {
-    return axios.delete(`${BASE_URL}/${id}`);
+  async deleteProduct(id: number): Promise<void> {
+    await axios.delete(`${BASE_URL}/${id}`);
+  }
+
+  // Obtener productos por categoría
+  async getProductsByCategory(category: string): Promise<Product[]> {
+    const response = await axios.get<Product[]>(`${BASE_URL}/category/${category}`);
+    return response.data;
   }
 
   // Test de conexión
-  testConnection(): Promise<AxiosResponse<Product[]>> {
-    return axios.get(BASE_URL);
+  async testConnection(): Promise<Product[]> {
+    const response = await axios.get<Product[]>(BASE_URL);
+    return response.data;
+  }
+
+  // Apply discount (as per your controller)
+  async applyDiscount(id: number, discount: number): Promise<Product> {
+    const response = await axios.put<Product>(`${BASE_URL}/ofertas/${id}`, null, {
+      params: { newDiscount: discount }
+    });
+    return response.data;
+  }
+
+  // Update stock
+  async updateStock(id: number, stock: number): Promise<Product> {
+    const response = await axios.patch<Product>(`${BASE_URL}/${id}/stock`, null, {
+      params: { newStock: stock }
+    });
+    return response.data;
   }
 }
 
-// Exportamos la instancia (arregla el warning ESLint import/no-anonymous-default-export)
+// Exportamos la instancia
 const productService = new ProductService();
 export default productService;

@@ -23,8 +23,9 @@ export function Navbar() {
     const timeout = setTimeout(async () => {
       setLoadingSearch(true);
       try {
-        const res = await ProductService.getAllProducts();
-        const filtered = res.data.filter(p =>
+        // FIXED: No more .data access
+        const allProducts = await ProductService.getAllProducts();
+        const filtered = allProducts.filter(p =>
           p.nombre.toLowerCase().includes(query.toLowerCase())
         );
         setResults(filtered);

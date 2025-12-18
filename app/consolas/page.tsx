@@ -3,9 +3,8 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { ProductoCard } from "../components/productCard";
-import { useCart } from "../components/carritoContext";
 import ProductService, { Product } from "../service/productService";
-import productsJSON from "../product_image_index.json"; // imágenes locales
+import productsJSON from "../product_image_index.json";
 
 // Interfaces
 interface LocalProductImage {
@@ -13,34 +12,21 @@ interface LocalProductImage {
   img: string;
 }
 
-// Interfaz para UI
-interface Producto {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: string; // string para UI
-  img: string;
-  genero: string;
-  tamano: string;
-  jugadores: number;
-  lanzamiento: string;
-  desarrollador: string;
-}
+import { ProductoForCard } from "../components/product";
 
 export default function ConsolesPage() {
-  const [productsList, setProductsList] = useState<Producto[]>([]);
+  const [productsList, setProductsList] = useState<ProductoForCard[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchConsoles() {
       try {
-        const res = await ProductService.getAllProducts();
-        const apiProducts: Product[] = res.data;
+        const apiProducts = await ProductService.getAllProducts();
 
         // Filtramos solo los productos que sean consolas
         const consoles = apiProducts.filter((p) => p.cat === "Consolas");
 
-        const data: Producto[] = consoles.map((prod) => {
+        const data: ProductoForCard[] = consoles.map((prod) => {
           // Buscar imagen local
           const localImg = (productsJSON as LocalProductImage[]).find(
             (p) => p.id_producto === prod.id_producto
@@ -49,14 +35,17 @@ export default function ConsolesPage() {
           return {
             id: prod.id_producto,
             nombre: prod.nombre,
-            descripcion: prod.description || "",
-            precio: prod.price.toString(), // <-- convertimos a string
-            img: prod.img || localImg || "/images/default.jpg",
-            genero: "N/A",                // valor por defecto para consolas
-            tamano: "N/A",                // valor por defecto para consolas
-            jugadores: 1,                 // valor por defecto
-            lanzamiento: "Por confirmar", // valor por defecto
-            desarrollador: "Desconocido", // valor por defecto
+            descripcion: prod.description || "Sin descripción",
+            precio: prod.price.toString(), // Convert to string here
+            img: localImg || prod.img || "/images/default.jpg",
+            genero: prod.cat || "Consola",
+            tamano: "N/A",
+            jugadores: 1,
+            lanzamiento: "Por confirmar",
+            desarrollador: prod.detail?.split(',')[0] || "Desconocido",
+            stock: prod.stock || 0,
+            cat: prod.cat || "Consolas",
+            discount: prod.discount || 0
           };
         });
 
@@ -100,8 +89,8 @@ export default function ConsolesPage() {
               <ProductoCard
                 key={prod.id}
                 prod={prod}
-                itemType="producto"
-                buttonClass="btn-success"
+                itemType="consola"
+                buttonClass="btn-primary"
               />
             ))}
           </div>
