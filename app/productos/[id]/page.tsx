@@ -118,7 +118,7 @@ export default function ProductDetailPage() {
                   {'★'.repeat(starRating || 0)}{'☆'.repeat(5 - (starRating || 0))}
                 </span>
               </div>
-              <div className="small text-muted">
+              <div className="mb-2">
                 Basado en {rating.count} calificaciones
                 {rating.mean_critics && (
                   <span> • Críticos: {Math.round(rating.mean_critics * 100)}%</span>
